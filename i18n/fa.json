@@ -1,0 +1,18 @@
+{
+    "navbar": {
+        "home": "خانه",
+        "projects": "پروژه‌ها",
+        "blog": "بلاگ",
+        "contact": "ارتباط",
+        "search": "جستجو",
+        "search_placeholder": "مقاله‌ها، تگ‌ها و موارد دیگر را جستجو کنید...",
+        "search_hint": "برای جستجو Enter را بزنید"
+    },
+    "home_page": {
+        "title": "صفحه اصلی",
+        "description": "به وبسایت ما خوش آمدید!"
+    },
+    "footer": {
+        "copyright": "تمام حقوق محفوظ است."
+    }
+}

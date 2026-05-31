@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@nuxt/content",
     "@nuxtjs/i18n",
+    "@nuxt/ui",
   ],
   vite: {
     plugins: [tailwindcss()],
@@ -28,20 +29,34 @@ export default defineNuxtConfig({
   },
   icon: {
     serverBundle: {
-      collections: ["lucide"],
+      collections: ["lucide", "simple-icons"],
     },
   },
   colorMode: {
     classSuffix: "",
+    preference: "dark",
   },
   content: {},
   i18n: {
     baseUrl: "https://soroushalinia.ir",
     locales: [
-      { code: "en", name: "English", language: "en-US", dir: "ltr" },
-      { code: "fa", name: "Farsi", language: "fa-IR", dir: "rtl" },
+      {
+        code: "en",
+        name: "English",
+        language: "en-US",
+        dir: "ltr",
+        file: "en.json",
+      },
+      {
+        code: "fa",
+        name: "Farsi",
+        language: "fa-IR",
+        dir: "rtl",
+        file: "fa.json",
+      },
     ],
     strategy: "prefix_except_default",
     defaultLocale: "en",
+    langDir: "",
   },
 });

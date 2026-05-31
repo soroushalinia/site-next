@@ -1,15 +1,34 @@
 @import "tailwindcss";
+@import "@nuxt/ui";
 
 @font-face {
-  font-family: 'Roboto';
-  src: url('@/assets/fonts/Roboto-Variable.woff2') format('woff2');
+  font-family: "Roboto";
+  src: url("@/assets/fonts/Roboto-Variable.woff2") format("woff2");
   font-weight: 100 900;
 }
 
 @font-face {
-  font-family: 'Vazirmatn';
-  src: url('@/assets/fonts/Vazirmatn-Variable.woff2') format('woff2');
+  font-family: "Vazirmatn";
+  src: url("@/assets/fonts/Vazirmatn-Variable.woff2") format("woff2");
   font-weight: 100 900;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("@/assets/fonts/JetBrainsMono.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("@/assets/fonts/JetBrainsMono-Italic.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: italic;
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
 }
 
 @theme {
@@ -52,7 +71,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --font-display: 'Vazirmatn', 'Roboto', sans-serif;
+  --font-display: "Vazirmatn", "Roboto", sans-serif;
 }
 
 @layer base {
@@ -67,7 +86,7 @@
   }
 
   html {
-    font-family: 'Vazirmatn', 'Roboto', sans-serif;
+    font-family: "Vazirmatn", "Roboto", sans-serif;
   }
 
   ::selection {
@@ -75,8 +94,172 @@
   }
 }
 
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--btn-gap-md);
+    height: var(--btn-height-md);
+    padding-inline: var(--btn-px-md);
+    font-size: var(--btn-font-md);
+    font-weight: 500;
+    line-height: 1;
+    border-radius: var(--radius-xl);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .btn:focus-visible {
+    outline: none;
+    ring: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  .btn:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .btn--primary {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-color: var(--primary);
+  }
+
+  .btn--primary:hover {
+    opacity: 0.9;
+  }
+
+  .btn--secondary {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+    border-color: var(--border);
+  }
+
+  .btn--secondary:hover {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  .btn--outline {
+    background: transparent;
+    color: var(--foreground);
+    border-color: var(--border);
+  }
+
+  .btn--outline:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--foreground);
+    border-color: transparent;
+  }
+
+  .btn--ghost:hover {
+    background: var(--accent);
+  }
+
+  .btn--danger {
+    background: var(--destructive);
+    color: var(--destructive-foreground);
+    border-color: var(--destructive);
+  }
+
+  .btn--danger:hover {
+    opacity: 0.9;
+  }
+
+  .btn--xs {
+    height: var(--btn-height-xs);
+    padding-inline: var(--btn-px-xs);
+    font-size: var(--btn-font-xs);
+    gap: var(--btn-gap-xs);
+  }
+
+  .btn--sm {
+    height: var(--btn-height-sm);
+    padding-inline: var(--btn-px-sm);
+    font-size: var(--btn-font-sm);
+    gap: var(--btn-gap-sm);
+  }
+
+  .btn--md {
+    height: var(--btn-height-md);
+    padding-inline: var(--btn-px-md);
+    font-size: var(--btn-font-md);
+    gap: var(--btn-gap-md);
+  }
+
+  .btn--lg {
+    height: var(--btn-height-lg);
+    padding-inline: var(--btn-px-lg);
+    font-size: var(--btn-font-lg);
+    gap: var(--btn-gap-lg);
+  }
+
+  .btn--xl {
+    height: var(--btn-height-xl);
+    padding-inline: var(--btn-px-xl);
+    font-size: var(--btn-font-xl);
+    gap: var(--btn-gap-xl);
+  }
+
+  .btn--block {
+    width: 100%;
+  }
+
+  .btn--loading {
+    position: relative;
+    filter: brightness(0.92);
+  }
+
+  .btn .btn__spinner {
+    animation: btn-spin 0.6s linear infinite;
+  }
+
+  .btn--outline:focus-visible,
+  .btn--ghost:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 :root {
   --radius: 0.625rem;
+
+  --btn-height-xs: 1.75rem;
+  --btn-height-sm: 2.25rem;
+  --btn-height-md: 2.75rem;
+  --btn-height-lg: 3.5rem;
+  --btn-height-xl: 4.25rem;
+  --btn-px-xs: 0.625rem;
+  --btn-px-sm: 0.875rem;
+  --btn-px-md: 1.25rem;
+  --btn-px-lg: 1.75rem;
+  --btn-px-xl: 2.5rem;
+  --btn-font-xs: 0.6875rem;
+  --btn-font-sm: 0.8125rem;
+  --btn-font-md: 0.9375rem;
+  --btn-font-lg: 1.0625rem;
+  --btn-font-xl: 1.25rem;
+  --btn-gap-xs: 0.25rem;
+  --btn-gap-sm: 0.375rem;
+  --btn-gap-md: 0.5rem;
+  --btn-gap-lg: 0.625rem;
+  --btn-gap-xl: 0.75rem;
 
   --background: #f7f9fc;
   --foreground: #0f172a;

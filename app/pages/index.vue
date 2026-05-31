@@ -27,9 +27,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div v-if="page">
-    <h1>{{ page.title }}</h1>
-    <p>{{ page.description }}</p>
+  <div>
+    <h1>{{ $t("home_page.title") }}</h1>
   </div>
-  <div v-else>Home not found</div>
 </template>
