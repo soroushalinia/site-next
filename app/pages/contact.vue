@@ -47,10 +47,6 @@ const submitForm = async () => {
   status.value = "sending";
 
   if (!web3formsKey) {
-    console.warn(
-      "[contact] runtimeConfig keys:",
-      Object.keys(useRuntimeConfig().public),
-    );
     status.value = "error";
     return;
   }

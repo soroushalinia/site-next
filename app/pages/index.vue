@@ -1,55 +1,57 @@
 <script setup lang="ts">
-import type { Collections } from "@nuxt/content";
+import { fetchLocalizedContent } from "../composables/useFetchLocalized";
+import { useLocaleInfo } from "../composables/useLocaleInfo";
 
-const { locale, t } = useI18n();
+const { t } = useI18n();
 const { siteName } = useSiteSeo();
+const { prefix } = useLocaleInfo();
 
 const emailUser = t("contact_page.email_user");
 const emailDomain = t("contact_page.email_domain");
 
 useScrollReveal();
 
-const localePrefix = computed(() => (locale.value === "fa" ? "/fa" : ""));
-
 const { data: page } = await useAsyncData(
-  "page-index-" + locale.value,
-  async () => {
-    const collection = ("content_" + locale.value) as keyof Collections;
-    let content = await queryCollection(collection).first();
-    if (!content && locale.value !== "en") {
-      content = await queryCollection("content_en").first();
-    }
-    return content;
-  },
-  { watch: [locale] },
+  "page-index-" + prefix.value,
+  () => fetchLocalizedContent("content", { first: true }),
+  { watch: [prefix] },
 );
 
 const { data: featuredProjects } = await useAsyncData(
-  "featured-projects-" + locale.value,
+  "featured-projects-" + prefix.value,
   async () => {
-    const collection = ("projects_" + locale.value) as keyof Collections;
-    let projects = await queryCollection(collection).all();
-    if (projects.length === 0 && locale.value !== "en") {
-      projects = await queryCollection("projects_en").all();
+    interface Project {
+      id?: string;
+      title?: string;
+      description?: string;
+      tags?: string[];
     }
-    return projects?.slice(0, 2) ?? [];
+    const projects = (await fetchLocalizedContent<Project[]>("projects")) ?? [];
+    return projects.slice(0, 2);
   },
-  { watch: [locale] },
+  { watch: [prefix] },
 );
 
 const { data: recentPosts } = await useAsyncData(
-  "recent-posts-" + locale.value,
+  "recent-posts-" + prefix.value,
   async () => {
-    const collection = ("blog_" + locale.value) as keyof Collections;
-    let data = await queryCollection(collection).all();
-    data = data?.filter((p) => !p.path?.endsWith("/index")) ?? [];
-    data.sort(
-      (a, b) =>
-        new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime(),
-    );
-    return data?.slice(0, 2) ?? [];
+    interface Post {
+      id?: string;
+      title?: string;
+      description?: string;
+      path?: string;
+      date?: string;
+    }
+    const posts = (await fetchLocalizedContent<Post[]>("blog")) ?? [];
+    const filtered = posts
+      .filter((p) => !p.path?.endsWith("/index"))
+      .sort(
+        (a, b) =>
+          new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime(),
+      );
+    return filtered.slice(0, 2);
   },
-  { watch: [locale] },
+  { watch: [prefix] },
 );
 
 useSeoMeta({
@@ -109,7 +111,7 @@ useSeoMeta({
           {{ t("home_page.download_cv") }}
         </a>
         <NuxtLink
-          :to="`${localePrefix}/contact`"
+          :to="`${prefix}/contact`"
           class="btn btn--outline w-full sm:w-auto min-w-36 justify-center"
         >
           {{ t("home_page.cta_contact") }}

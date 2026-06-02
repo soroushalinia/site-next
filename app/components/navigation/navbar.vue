@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { Collections } from "@nuxt/content";
+import { useLocaleInfo } from "../../composables/useLocaleInfo";
 
 const route = useRoute();
 const router = useRouter();
 
 const colorMode = useColorMode();
 const { locale, t } = useI18n();
+const { prefix, isFa } = useLocaleInfo();
 const switchLocalePath = useSwitchLocalePath();
 const { brandName } = useSiteSeo();
 
@@ -13,14 +15,20 @@ const isSearchOpen = ref(false);
 const isSidebarOpen = ref(false);
 
 const query = ref("");
-const results = ref<
-  { title: string; description: string; path: string; type: string }[]
->([]);
+interface SearchResult {
+  title: string;
+  description: string;
+  path: string;
+  type: "blog" | "project";
+  score?: number;
+  matches?: boolean;
+}
+const results = ref<SearchResult[]>([]);
 const searching = ref(false);
 let debounceTimer: ReturnType<typeof setTimeout>;
 
-const isRtl = computed(() => locale.value === "fa");
-const localePrefix = computed(() => (locale.value === "fa" ? "/fa" : ""));
+const isRtl = computed(() => isFa.value);
+const localePrefix = prefix;
 
 const navigation = computed(() => {
   const p = localePrefix.value;
@@ -64,6 +72,25 @@ function buildSearchScore(
   }, 0);
 }
 
+interface ContentItem {
+  title: string;
+  description?: string;
+  path?: string;
+  id?: string;
+  tags?: string[];
+  body?: { value: unknown };
+}
+
+const cachedSearchData = ref<{
+  blog: ContentItem[] | null;
+  projects: ContentItem[] | null;
+}>({ blog: null, projects: null });
+
+watch(locale, () => {
+  cachedSearchData.value.blog = null;
+  cachedSearchData.value.projects = null;
+});
+
 const doSearch = async () => {
   const term = query.value.trim();
   if (!term) {
@@ -74,31 +101,29 @@ const doSearch = async () => {
   searching.value = true;
 
   try {
+    const terms = normalizeSearchText(term).split(" ").filter(Boolean);
     const blogCollection = ("blog_" + locale.value) as keyof Collections;
     const projectCollection = ("projects_" + locale.value) as keyof Collections;
-    const terms = normalizeSearchText(term).split(" ").filter(Boolean);
 
-    const [blogResults, projectResults] = await Promise.all([
-      queryCollection(blogCollection)
-        .all()
-        .catch(() => []),
-      queryCollection(projectCollection)
-        .all()
-        .catch(() => []),
-    ]);
-
-    interface ResultItem {
-      title: string;
-      description?: string;
-      path?: string;
-      id?: string;
-      tags?: string[];
-      body?: { value?: unknown };
+    if (!cachedSearchData.value.blog || !cachedSearchData.value.projects) {
+      const [blogResults, projectResults] = await Promise.all([
+        queryCollection(blogCollection)
+          .all()
+          .catch(() => []),
+        queryCollection(projectCollection)
+          .all()
+          .catch(() => []),
+      ]);
+      cachedSearchData.value.blog = blogResults || [];
+      cachedSearchData.value.projects = projectResults || [];
     }
 
+    const blogResults = cachedSearchData.value.blog as ContentItem[];
+    const projectResults = cachedSearchData.value.projects as ContentItem[];
+
     const mappedBlog = (blogResults || [])
-      .filter((p: ResultItem) => !p.path?.endsWith("/index"))
-      .map((p: ResultItem) => {
+      .filter((p: ContentItem) => !p.path?.endsWith("/index"))
+      .map((p: ContentItem) => {
         const searchableText = normalizeSearchText(
           [
             p.title,
@@ -129,7 +154,7 @@ const doSearch = async () => {
       }));
 
     const mappedProjects = (projectResults || [])
-      .map((p: ResultItem) => {
+      .map((p: ContentItem) => {
         const searchableText = normalizeSearchText(
           [p.title, p.description || "", (p.tags || []).join(" ")].join(" "),
         );

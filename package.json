@@ -19,7 +19,6 @@
     "@nuxtjs/i18n": "^10.4.0",
     "@pinia/nuxt": "^0.11.3",
     "@tailwindcss/vite": "^4.3.0",
-    "@tanstack/vue-query": "^5.100.14",
     "better-sqlite3": "^12.10.0",
     "nuxt": "^4.4.6",
     "pinia": "^3.0.4",

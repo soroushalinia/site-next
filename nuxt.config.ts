@@ -24,9 +24,6 @@ export default defineNuxtConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
-    optimizeDeps: {
-      include: ["@tanstack/vue-query"],
-    },
     build: {
       rollupOptions: {
         onwarn(warning, warn) {

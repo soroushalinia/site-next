@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import type { Collections } from "@nuxt/content";
+import { fetchLocalizedContent } from "../composables/useFetchLocalized";
+import { useLocaleInfo } from "../composables/useLocaleInfo";
 
-const { locale, t } = useI18n();
+const { t } = useI18n();
 const { buildPageTitle } = useSiteSeo();
+const { prefix } = useLocaleInfo();
 
 useScrollReveal();
 
+interface Project {
+  id?: string;
+  title?: string;
+  description?: string;
+  tags?: string[];
+}
+
 const { data: projects } = await useAsyncData(
-  "projects-" + locale.value,
-  async () => {
-    const collection = ("projects_" + locale.value) as keyof Collections;
-    let data = await queryCollection(collection).all();
-    if (data.length === 0 && locale.value !== "en") {
-      data = await queryCollection("projects_en").all();
-    }
-    return data;
-  },
-  { watch: [locale] },
+  "projects-" + prefix.value,
+  () => fetchLocalizedContent<Project[]>("projects"),
+  { watch: [prefix] },
 );
 
 useSeoMeta({

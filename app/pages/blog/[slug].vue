@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import type { Collections } from "@nuxt/content";
+import { fetchLocalizedContent } from "../../composables/useFetchLocalized";
+import { useLocaleInfo } from "../../composables/useLocaleInfo";
 
-const { locale, t } = useI18n();
-const { buildPageTitle } = useSiteSeo();
+const { t } = useI18n();
+const { buildPageTitle, siteName } = useSiteSeo();
+const { prefix, isFa, langCode, toDisplayNumber } = useLocaleInfo();
 const route = useRoute();
 const {
   public: { siteUrl = "https://soroushalinia.ir" },
@@ -36,15 +38,21 @@ function walkTreeAndConvertFootnotes(node: unknown): unknown {
 }
 
 const { data: post } = await useAsyncData(
-  `blog-${locale.value}-${slug}`,
+  `blog-${prefix.value}-${slug}`,
   async () => {
-    const collection = ("blog_" + locale.value) as keyof Collections;
-    let content = await queryCollection(collection).path(blogPath).first();
-    if (!content && locale.value !== "en") {
-      content = await queryCollection("blog_en").path(blogPath).first();
+    interface BlogPost {
+      title?: string;
+      description?: string;
+      date?: string;
+      tags?: string[];
+      body?: { value: unknown };
     }
-    if (content && locale.value === "fa" && content.body?.value) {
-      content = {
+    const content = (await fetchLocalizedContent<BlogPost>("blog", {
+      path: blogPath,
+    })) as BlogPost | null;
+
+    if (content && isFa.value && content.body?.value) {
+      return {
         ...content,
         body: {
           ...content.body,
@@ -52,9 +60,10 @@ const { data: post } = await useAsyncData(
         },
       };
     }
+
     return content;
   },
-  { watch: [locale] },
+  { watch: [prefix] },
 );
 
 function extractTextFromMinimark(node: unknown): string {
@@ -66,12 +75,8 @@ function extractTextFromMinimark(node: unknown): string {
   return "";
 }
 
-function toPersianDigits(n: number): string {
-  return n.toLocaleString("fa-IR");
-}
-
 function applyPersianFootnotes() {
-  if (!contentRef.value || locale.value !== "fa") return;
+  if (!contentRef.value || !isFa.value) return;
   contentRef.value
     .querySelectorAll(
       "a[data-footnote-ref], .footnotes li, a[data-footnote-backref]",
@@ -94,7 +99,7 @@ const readingTime = computed(() => {
   const text = extractTextFromMinimark(value);
   const words = text.split(/\s+/).filter(Boolean).length;
   const minutes = Math.max(1, Math.ceil(words / 200));
-  return locale.value === "fa" ? toPersianDigits(minutes) : String(minutes);
+  return toDisplayNumber(minutes);
 });
 
 function extractTocFromBody(
@@ -143,20 +148,20 @@ const numberedToc = computed(() => {
       h3 = 0;
       return {
         ...link,
-        number: locale.value === "fa" ? toPersianDigits(h1) : String(h1),
+        number: toDisplayNumber(h1),
       };
     }
     if (link.depth === 2) {
       h2++;
       h3 = 0;
-      const a = locale.value === "fa" ? toPersianDigits(h1) : String(h1);
-      const b = locale.value === "fa" ? toPersianDigits(h2) : String(h2);
+      const a = toDisplayNumber(h1);
+      const b = toDisplayNumber(h2);
       return { ...link, number: `${a}.${b}` };
     }
     h3++;
-    const a = locale.value === "fa" ? toPersianDigits(h1) : String(h1);
-    const b = locale.value === "fa" ? toPersianDigits(h2) : String(h2);
-    const c = locale.value === "fa" ? toPersianDigits(h3) : String(h3);
+    const a = toDisplayNumber(h1);
+    const b = toDisplayNumber(h2);
+    const c = toDisplayNumber(h3);
     return { ...link, number: `${a}.${b}.${c}` };
   });
 });
@@ -176,15 +181,15 @@ const articleSchema = computed(() =>
     description: post.value?.description,
     datePublished: date.value || undefined,
     dateModified: date.value || undefined,
-    inLanguage: locale.value === "fa" ? "fa-IR" : "en-US",
+    inLanguage: langCode.value,
     mainEntityOfPage: new URL(route.path, siteUrl).toString(),
     author: {
       "@type": "Person",
-      name: locale.value === "fa" ? "سروش علی نیا" : "Soroush Alinia",
+      name: siteName.value,
     },
     publisher: {
       "@type": "Person",
-      name: locale.value === "fa" ? "سروش علی نیا" : "Soroush Alinia",
+      name: siteName.value,
     },
   }),
 );
@@ -234,7 +239,7 @@ watch(post, () => {
   nextTick(() => addLangLabels());
 });
 
-watch(locale, () => {
+watch(isFa, () => {
   nextTick(() => applyPersianFootnotes());
 });
 
@@ -263,8 +268,8 @@ useHead({
 <template>
   <div v-if="post" class="py-12 px-4">
     <article
-      :dir="locale === 'fa' ? 'rtl' : 'ltr'"
-      :class="['mx-auto max-w-none', locale === 'fa' ? 'fa-footnotes' : '']"
+      :dir="isFa ? 'rtl' : 'ltr'"
+      :class="['mx-auto max-w-none', isFa ? 'fa-footnotes' : '']"
     >
       <header class="mb-8">
         <h1 class="mb-4 text-3xl sm:text-4xl font-bold">{{ post.title }}</h1>
@@ -278,7 +283,7 @@ useHead({
           >
             <Icon name="lucide:calendar" class="size-4.5 self-center -mt-1" />
             {{
-              new Date(date).toLocaleDateString(locale === "fa" ? "fa" : "en", {
+              new Date(date).toLocaleDateString(isFa ? "fa" : "en", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -321,8 +326,8 @@ useHead({
               class="text-muted-foreground hover:text-foreground transition-colors"
               :class="{
                 'font-semibold text-foreground': link.depth <= 1,
-                'pr-4': locale === 'fa' && link.depth === 3,
-                'pl-4': locale !== 'fa' && link.depth === 3,
+                'pr-4': isFa && link.depth === 3,
+                'pl-4': !isFa && link.depth === 3,
               }"
             >
               <span class="text-primary/60 font-medium tabular-nums ml-1.5"
@@ -337,7 +342,7 @@ useHead({
       <div
         ref="contentRef"
         class="content-body [&_pre_code]:!font-mono [&_code]:!font-mono"
-        :class="locale === 'fa' ? 'content-fa' : ''"
+        :class="isFa ? 'content-fa' : ''"
       >
         <ContentRenderer :value="post" />
       </div>
