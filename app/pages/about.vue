@@ -4,7 +4,7 @@ import { useLocaleInfo } from "../composables/useLocaleInfo";
 
 const { t } = useI18n();
 const { buildPageTitle } = useSiteSeo();
-const { prefix } = useLocaleInfo();
+const { prefix, isFa } = useLocaleInfo();
 
 useScrollReveal();
 
@@ -109,11 +109,8 @@ useSeoMeta({
         {{ t("about_page.experience_title") }}
       </h2>
 
-      <div class="relative">
-        <div
-          class="absolute top-0 bottom-0 w-px bg-border"
-          :class="locale === 'fa' ? 'right-3' : 'left-3'"
-        />
+      <div class="relative" dir="ltr">
+        <div class="absolute top-0 bottom-0 w-px bg-border left-3" />
 
         <div class="flex flex-col gap-8">
           <div
@@ -130,7 +127,10 @@ useSeoMeta({
               </div>
             </div>
 
-            <div class="flex-1 rounded-lg border bg-card p-5">
+            <div
+              class="flex-1 rounded-lg border bg-card p-5"
+              :dir="isFa ? 'rtl' : 'ltr'"
+            >
               <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-2">
                 <span class="text-xs text-muted-foreground tabular-nums">
                   {{ item.period }}

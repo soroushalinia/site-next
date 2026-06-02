@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { Collections } from "@nuxt/content";
+import { fetchLocalizedContent } from "../../composables/useFetchLocalized";
+import { useLocaleInfo } from "../../composables/useLocaleInfo";
 
-const { locale, t } = useI18n();
+const { t } = useI18n();
 const { buildPageTitle } = useSiteSeo();
+const { prefix, isFa, toDisplayNumber } = useLocaleInfo();
 
 useScrollReveal();
-
-const localePrefix = computed(() => (locale.value === "fa" ? "/fa" : ""));
 
 function extractTextFromMinimark(node: unknown): string {
   if (!node) return "";
@@ -26,24 +26,31 @@ function getReadingTime(body: { value?: unknown }): string {
         ),
       )
     : 1;
-  return locale.value === "fa"
-    ? minutes.toLocaleString("fa-IR")
-    : String(minutes);
+  return toDisplayNumber(minutes);
+}
+
+interface BlogPost {
+  id?: string;
+  title?: string;
+  description?: string;
+  path?: string;
+  date?: string;
+  body?: { value: unknown };
+  tags?: string[];
 }
 
 const { data: posts } = await useAsyncData(
-  "blog-index-" + locale.value,
+  "blog-index-" + prefix.value,
   async () => {
-    const collection = ("blog_" + locale.value) as keyof Collections;
-    let data = await queryCollection(collection).all();
-    data = data?.filter((p) => !p.path?.endsWith("/index")) ?? [];
-    data.sort(
-      (a, b) =>
-        new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime(),
-    );
-    return data;
+    const postList = (await fetchLocalizedContent<BlogPost[]>("blog")) ?? [];
+    return postList
+      .filter((p) => !p.path?.endsWith("/index"))
+      .sort(
+        (a, b) =>
+          new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime(),
+      );
   },
-  { watch: [locale] },
+  { watch: [prefix] },
 );
 
 useSeoMeta({
@@ -66,8 +73,9 @@ useSeoMeta({
       <NuxtLink
         v-for="(post, i) in posts"
         :key="post.id"
-        :to="`${localePrefix}${post.path}`"
+        :to="`${prefix}${post.path}`"
         class="rounded-lg border bg-card p-6 transition-all duration-200 hover:border-primary/50 hover:shadow-md group reveal"
+        :dir="isFa ? 'rtl' : 'ltr'"
         :style="{ animationDelay: `${i * 100}ms` }"
       >
         <h2
@@ -85,14 +93,11 @@ useSeoMeta({
           >
             <Icon name="lucide:calendar" class="size-4.5 self-center -mt-1" />
             {{
-              new Date(post.date).toLocaleDateString(
-                locale === "fa" ? "fa" : "en",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                },
-              )
+              new Date(post.date).toLocaleDateString(isFa ? "fa" : "en", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
             }}
           </time>
           <span class="inline-flex items-baseline gap-1.5 whitespace-nowrap">
@@ -119,9 +124,7 @@ useSeoMeta({
           </span>
           <span class="font-medium text-primary">
             {{ t("blog_page.read_more") }}
-            <span class="text-3xl leading-none">{{
-              locale === "fa" ? "\u2190" : "\u2192"
-            }}</span>
+            <span class="text-3xl leading-none">{{ isFa ? "←" : "→" }}</span>
           </span>
         </div>
       </NuxtLink>
