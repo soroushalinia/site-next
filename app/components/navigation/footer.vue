@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t, locale } = useI18n();
+const { brandName } = useSiteSeo();
 
 const localePrefix = computed(() => (locale.value === "fa" ? "/fa" : ""));
 
@@ -48,8 +49,9 @@ const socials = [
           <NuxtLink
             :to="localePrefix || '/'"
             class="font-mono text-sm font-semibold text-center sm:ltr:text-left sm:rtl:text-right"
+            dir="ltr"
           >
-            Soroush Alinia
+            {{ brandName }}
           </NuxtLink>
         </div>
 

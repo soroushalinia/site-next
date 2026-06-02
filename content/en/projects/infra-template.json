@@ -1,0 +1,6 @@
+{
+  "title": "Infra Template",
+  "description": "A GitHub template for bootstrapping a self-hosted infrastructure. It bundles common services such as Git, identity, artifact management, object storage, mail, and CI/CD behind a reverse proxy.",
+  "tags": ["Docker", "Nginx", "Nexus", "Bash"],
+  "github": "https://github.com/soroushalinia/infra-template"
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Namira",
+  "description": "An open-source anti-censorship project focused on free and resilient connectivity. It collects and benchmarks proxy sources and surfaces them through a unified dashboard. I worked primarily on the dashboard, backed by a Go service.",
+  "tags": ["Svelte", "Golang"],
+  "github": "https://github.com/NamiraNet",
+  "live": "https://namira.dev"
+}

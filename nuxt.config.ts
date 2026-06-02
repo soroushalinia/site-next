@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       failOnError: false,
-      routes: ["/", "/fa"],
+      routes: ["/", "/fa", "/sitemap.xml"],
     },
   },
   css: ["~/assets/css/main.css"],
@@ -102,6 +102,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      siteUrl: "https://soroushalinia.ir",
       web3formsKey: "",
     },
   },

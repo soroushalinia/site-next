@@ -1,7 +1,0 @@
-{
-  "title": "Site Next",
-  "description": "وبسایت شخصی و بلاگ ساخته شده با Nuxt 4، با پشتیبانی از چندزبانه، حالت تاریک و سیستم طراحی مدرن.",
-  "tags": ["Nuxt 4", "Vue 3", "Tailwind CSS", "TypeScript"],
-  "github": "https://github.com/soroushalinia/site-next",
-  "live": "https://soroushalinia.ir"
-}

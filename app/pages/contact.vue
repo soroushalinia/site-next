@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n();
+const { buildPageTitle } = useSiteSeo();
 
 useScrollReveal();
 
@@ -86,6 +87,8 @@ const submitForm = async () => {
 useSeoMeta({
   title: t("contact_page.title"),
   description: t("contact_page.description"),
+  ogTitle: () => buildPageTitle(t("contact_page.title")),
+  twitterTitle: () => buildPageTitle(t("contact_page.title")),
 });
 </script>
 

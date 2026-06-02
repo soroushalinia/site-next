@@ -2,7 +2,11 @@
 import type { Collections } from "@nuxt/content";
 
 const { locale, t } = useI18n();
+const { buildPageTitle } = useSiteSeo();
 const route = useRoute();
+const {
+  public: { siteUrl = "https://soroushalinia.ir" },
+} = useRuntimeConfig();
 
 const slug = route.params.slug as string;
 const blogPath = slug === "index" ? "/blog" : `/blog/${slug}`;
@@ -120,7 +124,13 @@ function extractTocFromBody(
 const tocLinks = computed(() => {
   const body = post.value?.body?.value;
   if (!body) return [];
-  return extractTocFromBody(body);
+  // The auto-generated footnotes section uses a fixed English heading
+  // ("Footnotes", id="footnote-label"); localize its TOC label.
+  return extractTocFromBody(body).map((link) =>
+    link.id === "footnote-label"
+      ? { ...link, text: t("blog_post.footnotes") }
+      : link,
+  );
 });
 
 const numberedToc = computed(() => {
@@ -160,6 +170,26 @@ const tags = computed<string[]>(() => {
 });
 
 const date = computed(() => post.value?.date ?? "");
+const articleSchema = computed(() =>
+  JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.value?.title,
+    description: post.value?.description,
+    datePublished: date.value || undefined,
+    dateModified: date.value || undefined,
+    inLanguage: locale.value === "fa" ? "fa-IR" : "en-US",
+    mainEntityOfPage: new URL(route.path, siteUrl).toString(),
+    author: {
+      "@type": "Person",
+      name: locale.value === "fa" ? "سروش علی نیا" : "Soroush Alinia",
+    },
+    publisher: {
+      "@type": "Person",
+      name: locale.value === "fa" ? "سروش علی نیا" : "Soroush Alinia",
+    },
+  }),
+);
 
 const contentRef = ref<HTMLElement | null>(null);
 
@@ -211,8 +241,24 @@ watch(locale, () => {
 });
 
 useSeoMeta({
-  title: post.value?.title,
-  description: post.value?.description,
+  title: () => post.value?.title,
+  description: () => post.value?.description,
+  articlePublishedTime: () => date.value || undefined,
+  ogTitle: () => buildPageTitle(post.value?.title),
+  ogDescription: () => post.value?.description,
+  ogType: "article",
+  twitterTitle: () => buildPageTitle(post.value?.title),
+  twitterDescription: () => post.value?.description,
+});
+
+useHead({
+  script: [
+    {
+      key: "blog-post-schema",
+      type: "application/ld+json",
+      textContent: articleSchema,
+    },
+  ],
 });
 </script>
 
@@ -220,10 +266,10 @@ useSeoMeta({
   <div v-if="post" class="py-12 px-4">
     <article
       :dir="locale === 'fa' ? 'rtl' : 'ltr'"
-      :class="{ 'fa-footnotes': locale === 'fa' }"
+      :class="['mx-auto max-w-none', locale === 'fa' ? 'fa-footnotes' : '']"
     >
       <header class="mb-8">
-        <h1 class="text-3xl sm:text-4xl font-bold mb-4">{{ post.title }}</h1>
+        <h1 class="mb-4 text-3xl sm:text-4xl font-bold">{{ post.title }}</h1>
 
         <div
           class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
@@ -266,7 +312,7 @@ useSeoMeta({
         </div>
       </header>
 
-      <nav v-if="numberedToc.length" class="mb-8 p-4 rounded-lg border bg-card">
+      <nav v-if="numberedToc.length" class="mb-8 rounded-lg border bg-card p-4">
         <p class="text-sm font-semibold mb-2">
           {{ t("blog_post.table_of_contents") }}
         </p>

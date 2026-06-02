@@ -1,4 +1,7 @@
 {
+    "seo": {
+        "default_description": "Senior software engineer building modern web platforms, developer tools, and open-source projects."
+    },
     "navbar": {
         "home": "Home",
         "about": "About",
@@ -19,7 +22,7 @@
         "location": "Tehran, Iran",
         "remote_available": "Available worldwide (Remote)",
         "download_cv": "Download CV",
-        "bio": "I'm a self-taught senior software engineer passionate about software development with expertise in languages such as Golang and Python. Skilled in automating tasks, crafting tools and developing platforms, and active participation in open-source projects.",
+        "bio": "I'm a software engineer working across DevOps, backend, and frontend, with a primary focus on Go and Python. I build and maintain platforms, automate workflows, and develop tooling, with a strong emphasis on architecture and system design.",
         "contact_heading": "Have an opportunity, a question, or just want to say hi?",
         "contact_send": "Send me a message",
         "contact_send_hint": "It opens your mail client pre-filled.",
@@ -31,25 +34,28 @@
     },
     "about_page": {
         "title": "About",
-        "description": "Learn more",
-        "bio": "I'm a full-stack developer passionate about building modern web applications. I enjoy working with cutting-edge technologies and contributing to open source projects.",
+        "description": "Background, experience, and the technologies I work with.",
+        "bio": "I'm a software engineer working across DevOps, backend, and frontend, with a primary focus on Go and Python. I build and maintain platforms, automate workflows, and develop tooling, with a strong emphasis on architecture and system design.",
         "experience_title": "Experience",
-        "skills_title": "Skills"
+        "skills_title": "Skills",
+        "certificates_title": "Certificates"
     },
     "projects_page": {
         "title": "Projects",
-        "description": "Things I've built"
+        "description": "Selected software, web, and open-source projects I've built.",
+        "source": "Source",
+        "live": "Live"
     },
     "blog_page": {
         "title": "Blog",
-        "description": "Articles and thoughts",
+        "description": "Notes on software engineering, web development, and tools.",
         "recent_posts": "Recent Posts",
         "empty": "No posts yet.",
         "read_more": "Read more"
     },
     "contact_page": {
         "title": "Contact",
-        "description": "Get in touch with me",
+        "description": "Contact Soroush Alinia for collaborations, freelance work, or technical conversations.",
         "email": "Email",
         "email_user": "soroushalinia.dev",
         "email_domain": "gmail.com",
@@ -73,6 +79,7 @@
     },
     "blog_post": {
         "min_read": "{n} min read",
-        "table_of_contents": "Table of Contents"
+        "table_of_contents": "Table of Contents",
+        "footnotes": "Footnotes"
     }
 }

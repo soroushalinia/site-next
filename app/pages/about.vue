@@ -2,6 +2,7 @@
 import type { Collections } from "@nuxt/content";
 
 const { locale, t } = useI18n();
+const { buildPageTitle } = useSiteSeo();
 
 useScrollReveal();
 
@@ -26,6 +27,7 @@ const experience = computed(
       period: string;
       title: string;
       company: string;
+      url?: string;
       description: string;
     }[],
 );
@@ -62,6 +64,7 @@ const skillIcons: Record<string, string> = {
   "Gorilla Mux": "i-lucide-route",
   Nuxt: "i-simple-icons-nuxtdotjs",
   Vue: "i-simple-icons-vuedotjs",
+  Svelte: "i-simple-icons-svelte",
   "Next.js": "i-simple-icons-nextdotjs",
   React: "i-simple-icons-react",
 };
@@ -75,9 +78,22 @@ const skills = computed(
     }[],
 );
 
+const certificates = computed(
+  () =>
+    (about.value?.certificates ?? []) as {
+      title: string;
+      org: string;
+      date: string;
+      url?: string;
+    }[],
+);
+
 useSeoMeta({
   title: t("about_page.title"),
   description: t("about_page.description"),
+  ogTitle: () => buildPageTitle(t("about_page.title")),
+  ogType: "profile",
+  twitterTitle: () => buildPageTitle(t("about_page.title")),
 });
 </script>
 
@@ -89,9 +105,7 @@ useSeoMeta({
       </h1>
     </div>
 
-    <p
-      class="text-muted-foreground leading-relaxed text-center max-w-2xl mx-auto reveal"
-    >
+    <p class="text-muted-foreground leading-relaxed text-center reveal">
       {{ t("about_page.bio") }}
     </p>
 
@@ -128,7 +142,18 @@ useSeoMeta({
                 </span>
                 <span class="font-semibold">{{ item.title }}</span>
                 <span class="text-muted-foreground">@</span>
-                <span class="text-muted-foreground">{{ item.company }}</span>
+                <a
+                  v-if="item.url"
+                  :href="item.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-muted-foreground hover:text-primary underline-offset-4 hover:underline transition-colors"
+                >
+                  {{ item.company }}
+                </a>
+                <span v-else class="text-muted-foreground">{{
+                  item.company
+                }}</span>
               </div>
               <p class="text-sm text-muted-foreground leading-relaxed">
                 {{ item.description }}
@@ -169,6 +194,43 @@ useSeoMeta({
             </span>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section v-if="certificates.length">
+      <h2 class="text-2xl font-semibold mb-8 text-center reveal">
+        {{ t("about_page.certificates_title") }}
+      </h2>
+
+      <div class="flex flex-col gap-4">
+        <component
+          :is="cert.url ? 'a' : 'div'"
+          v-for="(cert, i) in certificates"
+          :key="i"
+          :href="cert.url"
+          :target="cert.url ? '_blank' : undefined"
+          :rel="cert.url ? 'noopener noreferrer' : undefined"
+          class="flex items-center gap-4 rounded-lg border bg-card p-5 reveal transition-colors"
+          :class="cert.url ? 'hover:border-primary/50' : ''"
+          :style="{ animationDelay: `${i * 100}ms` }"
+        >
+          <div
+            class="size-10 rounded-md bg-primary/10 flex items-center justify-center shrink-0"
+          >
+            <UIcon name="i-lucide-award" class="size-5 text-primary" />
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="font-semibold">{{ cert.title }}</div>
+            <div class="text-sm text-muted-foreground">
+              {{ cert.org }} · {{ cert.date }}
+            </div>
+          </div>
+          <UIcon
+            v-if="cert.url"
+            name="i-lucide-external-link"
+            class="size-4 text-muted-foreground shrink-0"
+          />
+        </component>
       </div>
     </section>
   </div>

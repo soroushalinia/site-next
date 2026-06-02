@@ -2,6 +2,7 @@
 import type { Collections } from "@nuxt/content";
 
 const { locale, t } = useI18n();
+const { siteName } = useSiteSeo();
 
 const emailUser = t("contact_page.email_user");
 const emailDomain = t("contact_page.email_domain");
@@ -52,8 +53,10 @@ const { data: recentPosts } = await useAsyncData(
 );
 
 useSeoMeta({
-  title: page.value?.title,
-  description: page.value?.description,
+  title: () => siteName.value,
+  description: page.value?.hero?.description ?? page.value?.description,
+  ogTitle: () => siteName.value,
+  twitterTitle: () => siteName.value,
 });
 </script>
 
@@ -304,7 +307,7 @@ useSeoMeta({
           </div>
         </a>
         <a
-          href="https://github.com/soroushalinia/hosting-demo-pwa"
+          href="https://github.com/NamiraNet/namira-web"
           target="_blank"
           rel="noopener noreferrer"
           dir="ltr"
@@ -315,24 +318,25 @@ useSeoMeta({
             <UIcon name="i-lucide-book" class="size-4 text-primary shrink-0" />
             <span
               class="font-medium truncate group-hover:text-primary transition-colors"
-              >hosting-demo-pwa</span
+              >namira-web</span
             >
           </div>
           <p class="text-xs text-muted-foreground line-clamp-2 flex-1">
-            VPS hosting PWA demo using Next.js
+            Dashboard for Namira, an open-source anti-censorship connectivity
+            project.
           </p>
           <div
             class="flex items-center gap-3 mt-3 pt-3 border-t border-border text-xs text-muted-foreground"
           >
             <span class="flex items-center gap-1">
               <UIcon name="i-lucide-star" class="size-3.5" />
-              0
+              26
             </span>
             <span class="flex items-center gap-1">
               <UIcon name="i-lucide-git-fork" class="size-3.5" />
-              0
+              6
             </span>
-            <span>TypeScript</span>
+            <span>Svelte</span>
           </div>
         </a>
       </div>

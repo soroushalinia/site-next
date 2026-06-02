@@ -2,9 +2,12 @@
 import type { Collections } from "@nuxt/content";
 
 const route = useRoute();
+const router = useRouter();
 
 const colorMode = useColorMode();
-const { locale, setLocale, t } = useI18n();
+const { locale, t } = useI18n();
+const switchLocalePath = useSwitchLocalePath();
+const { brandName } = useSiteSeo();
 
 const isSearchOpen = ref(false);
 const isSidebarOpen = ref(false);
@@ -30,6 +33,37 @@ const navigation = computed(() => {
   ];
 });
 
+function extractTextFromMinimark(node: unknown): string {
+  if (!node) return "";
+  if (typeof node === "string") return node;
+  if (Array.isArray(node)) return node.map(extractTextFromMinimark).join(" ");
+  return "";
+}
+
+function normalizeSearchText(value: string): string {
+  return value.toLocaleLowerCase(locale.value).replace(/\s+/g, " ").trim();
+}
+
+function buildSearchScore(
+  title: string,
+  searchableText: string,
+  terms: string[],
+) {
+  const normalizedTitle = normalizeSearchText(title);
+  return terms.reduce((score, term) => {
+    let nextScore = score;
+
+    if (normalizedTitle === term) nextScore += 120;
+    else if (normalizedTitle.startsWith(term)) nextScore += 60;
+    else if (normalizedTitle.includes(term)) nextScore += 35;
+
+    const matchCount = searchableText.split(term).length - 1;
+    nextScore += matchCount * 10;
+
+    return nextScore;
+  }, 0);
+}
+
 const doSearch = async () => {
   const term = query.value.trim();
   if (!term) {
@@ -42,14 +76,13 @@ const doSearch = async () => {
   try {
     const blogCollection = ("blog_" + locale.value) as keyof Collections;
     const projectCollection = ("projects_" + locale.value) as keyof Collections;
+    const terms = normalizeSearchText(term).split(" ").filter(Boolean);
 
     const [blogResults, projectResults] = await Promise.all([
       queryCollection(blogCollection)
-        .where("title", "LIKE", `%${term}%`)
         .all()
         .catch(() => []),
       queryCollection(projectCollection)
-        .where("title", "LIKE", `%${term}%`)
         .all()
         .catch(() => []),
     ]);
@@ -59,10 +92,35 @@ const doSearch = async () => {
       description?: string;
       path?: string;
       id?: string;
+      tags?: string[];
+      body?: { value?: unknown };
     }
 
     const mappedBlog = (blogResults || [])
       .filter((p: ResultItem) => !p.path?.endsWith("/index"))
+      .map((p: ResultItem) => {
+        const searchableText = normalizeSearchText(
+          [
+            p.title,
+            p.description || "",
+            (p.tags || []).join(" "),
+            extractTextFromMinimark(p.body?.value),
+          ].join(" "),
+        );
+
+        return {
+          title: p.title,
+          description: p.description || "",
+          path: `${localePrefix.value}${p.path || `/blog/${p.id}`}`,
+          type: "blog" as const,
+          score: buildSearchScore(p.title, searchableText, terms),
+          matches: terms.every((searchTerm) =>
+            searchableText.includes(searchTerm),
+          ),
+        };
+      })
+      .filter((p) => p.matches)
+      .sort((a, b) => b.score - a.score)
       .map((p: ResultItem) => ({
         title: p.title,
         description: p.description || "",
@@ -70,12 +128,31 @@ const doSearch = async () => {
         type: "blog" as const,
       }));
 
-    const mappedProjects = (projectResults || []).map((p: ResultItem) => ({
-      title: p.title,
-      description: p.description || "",
-      path: `${localePrefix.value}/projects`,
-      type: "project" as const,
-    }));
+    const mappedProjects = (projectResults || [])
+      .map((p: ResultItem) => {
+        const searchableText = normalizeSearchText(
+          [p.title, p.description || "", (p.tags || []).join(" ")].join(" "),
+        );
+
+        return {
+          title: p.title,
+          description: p.description || "",
+          path: `${localePrefix.value}/projects`,
+          type: "project" as const,
+          score: buildSearchScore(p.title, searchableText, terms),
+          matches: terms.every((searchTerm) =>
+            searchableText.includes(searchTerm),
+          ),
+        };
+      })
+      .filter((p) => p.matches)
+      .sort((a, b) => b.score - a.score)
+      .map((p) => ({
+        title: p.title,
+        description: p.description,
+        path: p.path,
+        type: p.type,
+      }));
 
     results.value = [...mappedBlog, ...mappedProjects].slice(0, 8);
   } catch {
@@ -100,9 +177,53 @@ const toggleTheme = () => {
   colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
 };
 
-const switchLocale = () => {
+const isBlogPostRoute = computed(() => {
+  return (
+    typeof route.params.slug === "string" &&
+    /^\/(?:fa\/)?blog\/[^/]+$/.test(route.path)
+  );
+});
+
+const getBlogIndexPath = (targetLocale: "en" | "fa") => {
+  return targetLocale === "fa" ? "/fa/blog" : "/blog";
+};
+
+const switchLocale = async () => {
   const current = (locale.value ?? "en") as "en" | "fa";
-  setLocale(current === "fa" ? "en" : "fa");
+  const targetLocale = current === "fa" ? "en" : "fa";
+
+  isSidebarOpen.value = false;
+
+  if (isBlogPostRoute.value) {
+    const slug = route.params.slug as string;
+    const blogCollection = ("blog_" + targetLocale) as keyof Collections;
+    const translatedPost = await queryCollection(blogCollection)
+      .path(`/blog/${slug}`)
+      .first()
+      .catch(() => null);
+
+    if (!translatedPost) {
+      await router.push(getBlogIndexPath(targetLocale));
+      return;
+    }
+  }
+
+  const targetPath = switchLocalePath(targetLocale);
+
+  if (targetPath) {
+    await router.push(targetPath);
+    return;
+  }
+
+  const pathWithoutLocale = route.path.replace(/^\/fa(?=\/|$)/, "") || "/";
+  const fallbackPath =
+    targetLocale === "fa"
+      ? pathWithoutLocale === "/"
+        ? "/fa"
+        : `/fa${pathWithoutLocale}`
+      : pathWithoutLocale;
+
+  await router.push(fallbackPath);
 };
 
 const isActiveRoute = (path: string) => {
@@ -130,8 +251,9 @@ const navLinkClass = (path: string) => {
           <NuxtLink
             :to="localePrefix || '/'"
             class="font-mono text-lg max-sm:text-sm font-semibold h-9 inline-flex items-center whitespace-nowrap"
+            dir="ltr"
           >
-            Soroush Alinia
+            {{ brandName }}
           </NuxtLink>
         </div>
 
@@ -214,7 +336,8 @@ const navLinkClass = (path: string) => {
             <NuxtLink
               :to="localePrefix || '/'"
               class="font-mono font-semibold ltr:text-left rtl:text-right"
-              >Soroush Alinia</NuxtLink
+              dir="ltr"
+              >{{ brandName }}</NuxtLink
             >
             <UButton
               variant="ghost"

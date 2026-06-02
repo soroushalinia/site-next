@@ -9,22 +9,24 @@
   "about": {
     "experience": [
       {
-        "period": "2024 — Present",
-        "title": "Senior Full-stack Developer",
-        "company": "Tech Company",
-        "description": "Building modern web applications with Nuxt, Vue, and Tailwind CSS. Leading frontend architecture and mentoring junior developers."
+        "period": "Dec 2025 - Present",
+        "title": "Open Source Contributor",
+        "company": "Parch Linux",
+        "url": "https://parchlinux.com",
+        "description": "Contributing to an open-source Linux distribution by maintaining desktop environment ISO releases and supporting documentation and the community."
       },
       {
-        "period": "2022 — 2024",
-        "title": "Full-stack Developer",
-        "company": "Startup Inc.",
-        "description": "Developed and maintained multiple client projects using Vue.js and Node.js. Improved development workflows and code quality."
+        "period": "Dec 2024 - Present",
+        "title": "Frontend / DevOps Developer",
+        "company": "Benobe (Sanandaj, Kurdistan)",
+        "url": "https://benobe.ir",
+        "description": "Designing and building modern, responsive web applications with Next.js and React, with a strong emphasis on performance and SEO. Owning the full deployment pipeline, from containerization and self-hosted CI/CD to managing staging and production environments."
       },
       {
-        "period": "2020 — 2022",
-        "title": "Frontend Developer",
-        "company": "Web Agency",
-        "description": "Built responsive and accessible user interfaces. Collaborated with design team to implement pixel-perfect designs."
+        "period": "Sep 2023 - Dec 2024",
+        "title": "Freelancer",
+        "company": "Self-employed",
+        "description": "Delivered a range of client projects focused on backend development with Django and FastAPI, applying solid architecture and system design principles."
       }
     ],
     "skills": [
@@ -45,8 +47,16 @@
       },
       {
         "category": "Frameworks",
-        "items": ["FastAPI", "Django", "Gin", "Gorilla Mux", "Nuxt", "Vue", "Next.js", "React"],
+        "items": ["FastAPI", "Django", "Gin", "Gorilla Mux", "Nuxt", "Vue", "Svelte", "Next.js", "React"],
         "icon": "i-lucide-globe"
+      }
+    ],
+    "certificates": [
+      {
+        "title": "Associate DevOps Engineer",
+        "org": "Arvan Academy",
+        "date": "Nov 2025",
+        "url": "https://academy.arvancloud.ir/certificate/12D189C23-1276E437C-12750A954/"
       }
     ]
   }

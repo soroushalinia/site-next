@@ -2,6 +2,7 @@
 import type { Collections } from "@nuxt/content";
 
 const { locale, t } = useI18n();
+const { buildPageTitle } = useSiteSeo();
 
 useScrollReveal();
 
@@ -21,6 +22,8 @@ const { data: projects } = await useAsyncData(
 useSeoMeta({
   title: t("projects_page.title"),
   description: t("projects_page.description"),
+  ogTitle: () => buildPageTitle(t("projects_page.title")),
+  twitterTitle: () => buildPageTitle(t("projects_page.title")),
 });
 </script>
 
@@ -63,7 +66,7 @@ useSeoMeta({
             class="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
           >
             <UIcon name="i-lucide-github" class="size-4" />
-            Source
+            {{ t("projects_page.source") }}
           </a>
           <a
             v-if="project.live"
@@ -73,7 +76,7 @@ useSeoMeta({
             class="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
           >
             <UIcon name="i-lucide-external-link" class="size-4" />
-            Live
+            {{ t("projects_page.live") }}
           </a>
         </div>
       </div>

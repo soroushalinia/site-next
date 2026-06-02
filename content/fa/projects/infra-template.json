@@ -1,0 +1,6 @@
+{
+  "title": "Infra Template",
+  "description": "یک قالب گیت‌هاب برای راه‌اندازی سریع یک زیرساخت سلف‌هاست، شامل سرویس‌های رایجی مثل گیت، احراز هویت، مدیریت آرتیفکت، ذخیره‌سازی شیء، ایمیل و CI/CD پشت یک ریورس‌پروکسی.",
+  "tags": ["Docker", "Nginx", "Nexus", "Bash"],
+  "github": "https://github.com/soroushalinia/infra-template"
+}

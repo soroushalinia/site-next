@@ -2,6 +2,7 @@
 import type { Collections } from "@nuxt/content";
 
 const { locale, t } = useI18n();
+const { buildPageTitle } = useSiteSeo();
 
 useScrollReveal();
 
@@ -16,10 +17,18 @@ function extractTextFromMinimark(node: unknown): string {
 
 function getReadingTime(body: { value?: unknown }): string {
   const value = body?.value;
-  if (!Array.isArray(value)) return "1";
-  const text = extractTextFromMinimark(value);
-  const words = text.split(/\s+/).filter(Boolean).length;
-  return String(Math.max(1, Math.ceil(words / 200)));
+  const minutes = Array.isArray(value)
+    ? Math.max(
+        1,
+        Math.ceil(
+          extractTextFromMinimark(value).split(/\s+/).filter(Boolean).length /
+            200,
+        ),
+      )
+    : 1;
+  return locale.value === "fa"
+    ? minutes.toLocaleString("fa-IR")
+    : String(minutes);
 }
 
 const { data: posts } = await useAsyncData(
@@ -40,6 +49,8 @@ const { data: posts } = await useAsyncData(
 useSeoMeta({
   title: t("blog_page.title"),
   description: t("blog_page.description"),
+  ogTitle: () => buildPageTitle(t("blog_page.title")),
+  twitterTitle: () => buildPageTitle(t("blog_page.title")),
 });
 </script>
 
