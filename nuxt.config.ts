@@ -3,6 +3,15 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
+  ssr: true,
+  nitro: {
+    preset: "github_pages",
+    prerender: {
+      crawlLinks: true,
+      failOnError: false,
+      routes: ["/", "/fa"],
+    },
+  },
   css: ["~/assets/css/main.css"],
   modules: [
     "@pinia/nuxt",

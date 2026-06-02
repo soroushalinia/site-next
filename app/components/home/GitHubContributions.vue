@@ -14,7 +14,36 @@ const { t, n } = useI18n();
 
 const { data, status } = useAsyncData<ContributionData>(
   "github-contributions",
-  () => $fetch("/api/github-contributions"),
+  async () => {
+    try {
+      const raw = await $fetch<{
+        total: Record<string, number>;
+        contributions: DayData[];
+      }>("https://github-contributions-api.jogruber.de/v4/soroushalinia", {
+        headers: { Accept: "application/json" },
+      });
+
+      const now = new Date();
+      const oneYearAgo = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() - 365,
+      );
+
+      const recent = raw.contributions.filter((c) => {
+        const parts = c.date.split("-").map(Number);
+        const d = new Date(parts[0], parts[1] - 1, parts[2]);
+        return d >= oneYearAgo && d <= now;
+      });
+
+      return {
+        total: recent.reduce((sum, c) => sum + c.count, 0),
+        contributions: recent,
+      };
+    } catch {
+      return { total: 0, contributions: [] };
+    }
+  },
 );
 
 const months = [
