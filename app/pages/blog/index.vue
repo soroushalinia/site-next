@@ -7,14 +7,14 @@ useScrollReveal();
 
 const localePrefix = computed(() => (locale.value === "fa" ? "/fa" : ""));
 
-function extractTextFromMinimark(node: any): string {
+function extractTextFromMinimark(node: unknown): string {
   if (!node) return "";
   if (typeof node === "string") return node;
   if (Array.isArray(node)) return node.map(extractTextFromMinimark).join(" ");
   return "";
 }
 
-function getReadingTime(body: any): string {
+function getReadingTime(body: { value?: unknown }): string {
   const value = body?.value;
   if (!Array.isArray(value)) return "1";
   const text = extractTextFromMinimark(value);

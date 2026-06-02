@@ -35,7 +35,7 @@ export default defineEventHandler(async () => {
       total: yearTotal,
       contributions: recent,
     };
-  } catch (e) {
+  } catch {
     return {
       total: 0,
       contributions: [],

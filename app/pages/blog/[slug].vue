@@ -11,7 +11,7 @@ function toPersianDigitsStr(s: string): string {
   return s.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]);
 }
 
-function walkTreeAndConvertFootnotes(node: any): any {
+function walkTreeAndConvertFootnotes(node: unknown): unknown {
   if (typeof node === "string" || !Array.isArray(node)) return node;
   if (typeof node[0] === "string" && node[1] && typeof node[1] === "object") {
     const [tag, props, ...children] = node;
@@ -21,7 +21,7 @@ function walkTreeAndConvertFootnotes(node: any): any {
         props["data-footnote-ref"] ||
         props.dataFootnoteBackref ||
         props["data-footnote-backref"]);
-    const newChildren = children.map((child: any) => {
+    const newChildren = children.map((child: unknown) => {
       if (isFootnoteLink && typeof child === "string")
         return toPersianDigitsStr(child);
       return walkTreeAndConvertFootnotes(child);
@@ -53,7 +53,7 @@ const { data: post } = await useAsyncData(
   { watch: [locale] },
 );
 
-function extractTextFromMinimark(node: any): string {
+function extractTextFromMinimark(node: unknown): string {
   if (!node) return "";
   if (typeof node === "string") return node;
   if (Array.isArray(node)) {
@@ -94,7 +94,7 @@ const readingTime = computed(() => {
 });
 
 function extractTocFromBody(
-  node: any,
+  node: unknown,
   depth = 0,
 ): { id: string; depth: number; text: string }[] {
   if (!Array.isArray(node)) return [];
@@ -166,7 +166,7 @@ const contentRef = ref<HTMLElement | null>(null);
 function addLangLabels() {
   if (!contentRef.value || !post.value?.body?.value) return;
   const langs: string[] = [];
-  function walk(arr: any) {
+  function walk(arr: unknown) {
     if (!Array.isArray(arr)) return;
     for (const item of arr) {
       if (typeof item === "string" || !Array.isArray(item)) continue;

@@ -32,8 +32,6 @@ const months = [
   "Dec",
 ];
 
-const dayLabels = ["", "", "", "", "", "", ""];
-
 const levelColors = [
   "bg-muted",
   "bg-primary/20",

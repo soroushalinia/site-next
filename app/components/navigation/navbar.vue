@@ -54,20 +54,27 @@ const doSearch = async () => {
         .catch(() => []),
     ]);
 
+    interface ResultItem {
+      title: string;
+      description?: string;
+      path?: string;
+      id?: string;
+    }
+
     const mappedBlog = (blogResults || [])
-      .filter((p: any) => !p.path?.endsWith("/index"))
-      .map((p: any) => ({
+      .filter((p: ResultItem) => !p.path?.endsWith("/index"))
+      .map((p: ResultItem) => ({
         title: p.title,
         description: p.description || "",
         path: `${localePrefix.value}${p.path || `/blog/${p.id}`}`,
-        type: "blog",
+        type: "blog" as const,
       }));
 
-    const mappedProjects = (projectResults || []).map((p: any) => ({
+    const mappedProjects = (projectResults || []).map((p: ResultItem) => ({
       title: p.title,
       description: p.description || "",
       path: `${localePrefix.value}/projects`,
-      type: "project",
+      type: "project" as const,
     }));
 
     results.value = [...mappedBlog, ...mappedProjects].slice(0, 8);
