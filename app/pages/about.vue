@@ -121,7 +121,7 @@ useSeoMeta({
               </div>
             </div>
 
-            <div class="flex-1 rounded-lg border p-5">
+            <div class="flex-1 rounded-lg border bg-card p-5">
               <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-2">
                 <span class="text-xs text-muted-foreground tabular-nums">
                   {{ item.period }}
@@ -148,7 +148,7 @@ useSeoMeta({
         <div
           v-for="(group, i) in skills"
           :key="group.category"
-          class="rounded-lg border p-5 reveal"
+          class="rounded-lg border bg-card p-5 reveal"
           :style="{ animationDelay: `${i * 100}ms` }"
         >
           <div class="flex items-center gap-2 mb-3">

@@ -36,7 +36,7 @@ useSeoMeta({
       <div
         v-for="(project, i) in projects"
         :key="project.id"
-        class="flex flex-col rounded-lg border p-6 transition-all duration-200 hover:border-primary/50 hover:shadow-md reveal"
+        class="flex flex-col rounded-lg border bg-card p-6 transition-all duration-200 hover:border-primary/50 hover:shadow-md reveal"
         :style="{ animationDelay: `${i * 100}ms` }"
       >
         <h3 class="text-lg font-semibold">

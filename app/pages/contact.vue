@@ -104,7 +104,7 @@ useSeoMeta({
         :href="link.href"
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center gap-4 rounded-lg border p-5 transition-all duration-200 hover:border-primary/50 hover:shadow-md group reveal"
+        class="flex items-center gap-4 rounded-lg border bg-card p-5 transition-all duration-200 hover:border-primary/50 hover:shadow-md group reveal"
         :style="{ animationDelay: `${i * 100}ms` }"
       >
         <div
@@ -123,7 +123,7 @@ useSeoMeta({
     </div>
 
     <form
-      class="rounded-lg border p-6 space-y-4 reveal"
+      class="rounded-lg border bg-card p-6 space-y-4 reveal"
       @submit.prevent="submitForm"
     >
       <div class="space-y-1.5">

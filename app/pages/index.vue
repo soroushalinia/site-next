@@ -184,7 +184,7 @@ useSeoMeta({
           v-for="(project, i) in featuredProjects"
           :key="project.id"
           :to="`${localePrefix}/projects`"
-          class="group rounded-lg border p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg reveal"
+          class="group rounded-lg border bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg reveal"
           :style="{ animationDelay: `${i * 100 + 100}ms` }"
         >
           <h3
@@ -223,7 +223,7 @@ useSeoMeta({
           v-for="(post, i) in recentPosts"
           :key="post.id"
           :to="`${localePrefix}${post.path}`"
-          class="rounded-lg border p-5 transition-all duration-200 hover:border-primary/50 hover:shadow-md group reveal"
+          class="rounded-lg border bg-card p-5 transition-all duration-200 hover:border-primary/50 hover:shadow-md group reveal"
           :style="{ animationDelay: `${i * 100 + 100}ms` }"
         >
           <div class="flex items-start justify-between gap-4">
@@ -275,7 +275,7 @@ useSeoMeta({
           target="_blank"
           rel="noopener noreferrer"
           dir="ltr"
-          class="rounded-lg border p-4 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group flex flex-col reveal"
+          class="rounded-lg border bg-card p-4 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group flex flex-col reveal"
           :style="{ animationDelay: '200ms' }"
         >
           <div class="flex items-center gap-2 mb-2">
@@ -308,7 +308,7 @@ useSeoMeta({
           target="_blank"
           rel="noopener noreferrer"
           dir="ltr"
-          class="rounded-lg border p-4 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group flex flex-col reveal"
+          class="rounded-lg border bg-card p-4 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group flex flex-col reveal"
           :style="{ animationDelay: '300ms' }"
         >
           <div class="flex items-center gap-2 mb-2">
@@ -339,7 +339,7 @@ useSeoMeta({
     </section>
 
     <section
-      class="rounded-lg border p-8 text-center relative overflow-hidden mt-16 sm:mt-20"
+      class="rounded-lg border bg-card p-8 text-center relative overflow-hidden mt-16 sm:mt-20"
     >
       <div
         class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)] pointer-events-none"

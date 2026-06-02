@@ -328,7 +328,7 @@ const navLinkClass = (path: string) => {
               v-for="result in results"
               :key="result.path + result.type"
               :to="result.path"
-              class="flex flex-col gap-1 rounded-lg border p-3 transition-all duration-200 hover:border-primary/50 hover:bg-muted/50"
+              class="flex flex-col gap-1 rounded-lg border bg-card p-3 transition-all duration-200 hover:border-primary/50 hover:bg-muted/50"
               @click="closeSearch"
             >
               <div class="flex items-center gap-2">

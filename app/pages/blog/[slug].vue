@@ -266,7 +266,7 @@ useSeoMeta({
         </div>
       </header>
 
-      <nav v-if="numberedToc.length" class="mb-8 p-4 rounded-lg border">
+      <nav v-if="numberedToc.length" class="mb-8 p-4 rounded-lg border bg-card">
         <p class="text-sm font-semibold mb-2">
           {{ t("blog_post.table_of_contents") }}
         </p>

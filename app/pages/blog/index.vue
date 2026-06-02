@@ -56,7 +56,7 @@ useSeoMeta({
         v-for="(post, i) in posts"
         :key="post.id"
         :to="`${localePrefix}${post.path}`"
-        class="rounded-lg border p-6 transition-all duration-200 hover:border-primary/50 hover:shadow-md group reveal"
+        class="rounded-lg border bg-card p-6 transition-all duration-200 hover:border-primary/50 hover:shadow-md group reveal"
         :style="{ animationDelay: `${i * 100}ms` }"
       >
         <h2
