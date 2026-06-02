@@ -10,7 +10,6 @@ export default defineContentConfig({
         description: z.string(),
         hero: z.object({
           greeting: z.string(),
-          subtitle: z.string(),
           description: z.string(),
         }),
       }),
@@ -23,7 +22,6 @@ export default defineContentConfig({
         description: z.string(),
         hero: z.object({
           greeting: z.string(),
-          subtitle: z.string(),
           description: z.string(),
         }),
       }),

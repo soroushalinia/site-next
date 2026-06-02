@@ -8,16 +8,22 @@ const slug = route.params.slug as string;
 const blogPath = slug === "index" ? "/blog" : `/blog/${slug}`;
 
 function toPersianDigitsStr(s: string): string {
-  return s.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹" [parseInt(d)]);
+  return s.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]);
 }
 
 function walkTreeAndConvertFootnotes(node: any): any {
   if (typeof node === "string" || !Array.isArray(node)) return node;
   if (typeof node[0] === "string" && node[1] && typeof node[1] === "object") {
     const [tag, props, ...children] = node;
-    const isFootnoteLink = tag === "a" && (props.dataFootnoteRef || props["data-footnote-ref"] || props.dataFootnoteBackref || props["data-footnote-backref"]);
+    const isFootnoteLink =
+      tag === "a" &&
+      (props.dataFootnoteRef ||
+        props["data-footnote-ref"] ||
+        props.dataFootnoteBackref ||
+        props["data-footnote-backref"]);
     const newChildren = children.map((child: any) => {
-      if (isFootnoteLink && typeof child === "string") return toPersianDigitsStr(child);
+      if (isFootnoteLink && typeof child === "string")
+        return toPersianDigitsStr(child);
       return walkTreeAndConvertFootnotes(child);
     });
     return [tag, props, ...newChildren];
@@ -62,12 +68,20 @@ function toPersianDigits(n: number): string {
 
 function applyPersianFootnotes() {
   if (!contentRef.value || locale.value !== "fa") return;
-  contentRef.value.querySelectorAll("a[data-footnote-ref], .footnotes li, a[data-footnote-backref]").forEach((el) => {
-    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-    while (walker.nextNode()) {
-      walker.currentNode.textContent = walker.currentNode.textContent!.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹" [parseInt(d)]);
-    }
-  });
+  contentRef.value
+    .querySelectorAll(
+      "a[data-footnote-ref], .footnotes li, a[data-footnote-backref]",
+    )
+    .forEach((el) => {
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) {
+        walker.currentNode.textContent =
+          walker.currentNode.textContent!.replace(
+            /\d/g,
+            (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)],
+          );
+      }
+    });
 }
 
 const readingTime = computed(() => {
@@ -79,7 +93,10 @@ const readingTime = computed(() => {
   return locale.value === "fa" ? toPersianDigits(minutes) : String(minutes);
 });
 
-function extractTocFromBody(node: any, depth = 0): { id: string; depth: number; text: string }[] {
+function extractTocFromBody(
+  node: any,
+  depth = 0,
+): { id: string; depth: number; text: string }[] {
   if (!Array.isArray(node)) return [];
   const links: { id: string; depth: number; text: string }[] = [];
   for (const item of node) {
@@ -108,14 +125,22 @@ const tocLinks = computed(() => {
 
 const numberedToc = computed(() => {
   const links = tocLinks.value;
-  let h1 = 0, h2 = 0, h3 = 0;
+  let h1 = 0,
+    h2 = 0,
+    h3 = 0;
   return links.map((link) => {
     if (link.depth <= 1) {
-      h1++; h2 = 0; h3 = 0;
-      return { ...link, number: locale.value === "fa" ? toPersianDigits(h1) : String(h1) };
+      h1++;
+      h2 = 0;
+      h3 = 0;
+      return {
+        ...link,
+        number: locale.value === "fa" ? toPersianDigits(h1) : String(h1),
+      };
     }
     if (link.depth === 2) {
-      h2++; h3 = 0;
+      h2++;
+      h3 = 0;
       const a = locale.value === "fa" ? toPersianDigits(h1) : String(h1);
       const b = locale.value === "fa" ? toPersianDigits(h2) : String(h2);
       return { ...link, number: `${a}.${b}` };
@@ -145,8 +170,13 @@ function addLangLabels() {
     if (!Array.isArray(arr)) return;
     for (const item of arr) {
       if (typeof item === "string" || !Array.isArray(item)) continue;
-      if (typeof item[0] === "string" && item[1] && typeof item[1] === "object") {
-        if (item[0] === "pre" && item[1]?.language) langs.push(item[1].language);
+      if (
+        typeof item[0] === "string" &&
+        item[1] &&
+        typeof item[1] === "object"
+      ) {
+        if (item[0] === "pre" && item[1]?.language)
+          langs.push(item[1].language);
         walk(item.slice(2));
       } else {
         walk(item);
@@ -188,28 +218,46 @@ useSeoMeta({
 
 <template>
   <div v-if="post" class="py-12 px-4">
-    <article :dir="locale === 'fa' ? 'rtl' : 'ltr'" :class="{ 'fa-footnotes': locale === 'fa' }">
+    <article
+      :dir="locale === 'fa' ? 'rtl' : 'ltr'"
+      :class="{ 'fa-footnotes': locale === 'fa' }"
+    >
       <header class="mb-8">
         <h1 class="text-3xl sm:text-4xl font-bold mb-4">{{ post.title }}</h1>
 
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-muted-foreground">
-          <time v-if="date" class="inline-flex items-baseline gap-1.5 whitespace-nowrap">
+        <div
+          class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
+        >
+          <time
+            v-if="date"
+            class="inline-flex items-baseline gap-1.5 whitespace-nowrap"
+          >
             <Icon name="lucide:calendar" class="size-4.5 self-center -mt-1" />
-            {{ new Date(date).toLocaleDateString(locale === "fa" ? "fa" : "en", {
-              year: "numeric", month: "long", day: "numeric"
-            }) }}
+            {{
+              new Date(date).toLocaleDateString(locale === "fa" ? "fa" : "en", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            }}
           </time>
           <span class="inline-flex items-baseline gap-1.5 whitespace-nowrap">
             <Icon name="lucide:clock" class="size-4.5 self-center -mt-1" />
             {{ t("blog_post.min_read", { n: readingTime }) }}
           </span>
-          <span v-if="tags.length" class="inline-flex items-baseline gap-1.5 flex-wrap">
-            <Icon name="lucide:tags" class="size-4.5 self-center -mt-1 shrink-0" />
+          <span
+            v-if="tags.length"
+            class="inline-flex items-baseline gap-1.5 flex-wrap"
+          >
+            <Icon
+              name="lucide:tags"
+              class="size-4.5 self-center -mt-1 shrink-0"
+            />
             <span class="flex flex-wrap gap-1.5">
               <span
                 v-for="tag in tags"
                 :key="tag"
-                class="px-2.5 py-1 rounded-sm text-xs font-medium bg-primary/10 text-primary"
+                class="px-2.5 py-1 rounded-sm text-xs font-medium bg-primary/20 text-accent-foreground"
               >
                 {{ tag }}
               </span>
@@ -219,15 +267,23 @@ useSeoMeta({
       </header>
 
       <nav v-if="numberedToc.length" class="mb-8 p-4 rounded-lg border">
-        <p class="text-sm font-semibold mb-2">{{ t("blog_post.table_of_contents") }}</p>
+        <p class="text-sm font-semibold mb-2">
+          {{ t("blog_post.table_of_contents") }}
+        </p>
         <ul class="space-y-1">
           <li v-for="link in numberedToc" :key="link.id" class="text-sm">
             <a
               :href="`#${link.id}`"
               class="text-muted-foreground hover:text-foreground transition-colors"
-              :class="{ 'font-semibold text-foreground': link.depth <= 1, 'pr-4': locale === 'fa' && link.depth === 3, 'pl-4': locale !== 'fa' && link.depth === 3 }"
+              :class="{
+                'font-semibold text-foreground': link.depth <= 1,
+                'pr-4': locale === 'fa' && link.depth === 3,
+                'pl-4': locale !== 'fa' && link.depth === 3,
+              }"
             >
-              <span class="text-primary/60 font-medium tabular-nums ml-1.5">{{ link.number }}.</span>
+              <span class="text-primary/60 font-medium tabular-nums ml-1.5"
+                >{{ link.number }}.</span
+              >
               {{ link.text }}
             </a>
           </li>

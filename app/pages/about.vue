@@ -3,6 +3,8 @@ import type { Collections } from "@nuxt/content";
 
 const { locale, t } = useI18n();
 
+useScrollReveal();
+
 const { data: page } = await useAsyncData(
   "about-" + locale.value,
   async () => {
@@ -81,23 +83,20 @@ useSeoMeta({
 
 <template>
   <div class="flex flex-col gap-16 py-12">
-    <div class="text-center">
+    <div class="text-center reveal">
       <h1 class="text-3xl sm:text-4xl font-bold">
         {{ t("about_page.title") }}
       </h1>
-      <p class="mt-2 text-muted-foreground">
-        {{ t("about_page.description") }}
-      </p>
     </div>
 
     <p
-      class="text-muted-foreground leading-relaxed text-center max-w-2xl mx-auto"
+      class="text-muted-foreground leading-relaxed text-center max-w-2xl mx-auto reveal"
     >
       {{ t("about_page.bio") }}
     </p>
 
     <section>
-      <h2 class="text-2xl font-semibold mb-8 text-center">
+      <h2 class="text-2xl font-semibold mb-8 text-center reveal">
         {{ t("about_page.experience_title") }}
       </h2>
 
@@ -108,7 +107,12 @@ useSeoMeta({
         />
 
         <div class="flex flex-col gap-8">
-          <div v-for="(item, i) in experience" :key="i" class="flex gap-6">
+          <div
+            v-for="(item, i) in experience"
+            :key="i"
+            class="flex gap-6 reveal"
+            :style="{ animationDelay: `${i * 100}ms` }"
+          >
             <div class="flex flex-col items-center">
               <div
                 class="size-6 rounded-full bg-primary flex items-center justify-center z-10"
@@ -136,15 +140,16 @@ useSeoMeta({
     </section>
 
     <section>
-      <h2 class="text-2xl font-semibold mb-8 text-center">
+      <h2 class="text-2xl font-semibold mb-8 text-center reveal">
         {{ t("about_page.skills_title") }}
       </h2>
 
       <div class="flex flex-col gap-4">
         <div
-          v-for="group in skills"
+          v-for="(group, i) in skills"
           :key="group.category"
-          class="rounded-lg border p-5"
+          class="rounded-lg border p-5 reveal"
+          :style="{ animationDelay: `${i * 100}ms` }"
         >
           <div class="flex items-center gap-2 mb-3">
             <UIcon :name="group.icon" class="size-5 text-primary" />
@@ -156,7 +161,10 @@ useSeoMeta({
               :key="skill"
               class="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm text-xs font-medium bg-primary/10 text-primary"
             >
-              <UIcon :name="skillIcons[skill] || 'i-lucide-circle'" class="size-3.5" />
+              <UIcon
+                :name="skillIcons[skill] || 'i-lucide-circle'"
+                class="size-3.5"
+              />
               {{ skill }}
             </span>
           </div>

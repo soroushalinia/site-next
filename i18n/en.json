@@ -13,12 +13,25 @@
         "title": "Home",
         "description": "Welcome to my site",
         "cta_projects": "View Projects",
-        "cta_contact": "Get in Touch",
-        "featured_title": "Featured Projects"
+        "cta_contact": "Contact Me",
+        "recent_projects": "Recent Projects",
+        "job_title": "Software Engineer",
+        "location": "Tehran, Iran",
+        "remote_available": "Available worldwide (Remote)",
+        "download_cv": "Download CV",
+        "bio": "I'm a self-taught senior software engineer passionate about software development with expertise in languages such as Golang and Python. Skilled in automating tasks, crafting tools and developing platforms, and active participation in open-source projects.",
+        "contact_heading": "Have an opportunity, a question, or just want to say hi?",
+        "contact_send": "Send me a message",
+        "contact_send_hint": "It opens your mail client pre-filled.",
+        "contact_alt_cta": "Need more ways to connect?",
+    "github_activity": "GitHub Activity",
+    "github_contributions": "{n} contributions in the last year",
+    "github_less": "Less",
+    "github_more": "More"
     },
     "about_page": {
         "title": "About",
-        "description": "Learn more about me",
+        "description": "Learn more",
         "bio": "I'm a full-stack developer passionate about building modern web applications. I enjoy working with cutting-edge technologies and contributing to open source projects.",
         "experience_title": "Experience",
         "skills_title": "Skills"
@@ -30,6 +43,7 @@
     "blog_page": {
         "title": "Blog",
         "description": "Articles and thoughts",
+        "recent_posts": "Recent Posts",
         "empty": "No posts yet.",
         "read_more": "Read more"
     },

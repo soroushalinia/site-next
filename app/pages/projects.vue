@@ -3,6 +3,8 @@ import type { Collections } from "@nuxt/content";
 
 const { locale, t } = useI18n();
 
+useScrollReveal();
+
 const { data: projects } = await useAsyncData(
   "projects-" + locale.value,
   async () => {
@@ -24,23 +26,18 @@ useSeoMeta({
 
 <template>
   <div class="flex flex-col gap-8 py-12">
-    <div class="text-center">
+    <div class="text-center reveal">
       <h1 class="text-3xl sm:text-4xl font-bold">
         {{ t("projects_page.title") }}
       </h1>
-      <p class="mt-2 text-muted-foreground">
-        {{ t("projects_page.description") }}
-      </p>
     </div>
 
-    <div
-      v-if="projects?.length"
-      class="grid grid-cols-1 md:grid-cols-2 gap-6"
-    >
+    <div v-if="projects?.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div
-        v-for="project in projects"
+        v-for="(project, i) in projects"
         :key="project.id"
-        class="flex flex-col rounded-lg border p-6 transition-all duration-200 hover:border-primary/50 hover:shadow-md"
+        class="flex flex-col rounded-lg border p-6 transition-all duration-200 hover:border-primary/50 hover:shadow-md reveal"
+        :style="{ animationDelay: `${i * 100}ms` }"
       >
         <h3 class="text-lg font-semibold">
           {{ project.title }}
@@ -49,11 +46,11 @@ useSeoMeta({
           {{ project.description }}
         </p>
         <div class="mt-4 flex flex-wrap gap-2">
-            <span
-              v-for="tag in project.tags"
-              :key="tag"
-              class="px-2.5 py-1 rounded-sm text-xs font-medium bg-primary/10 text-primary"
-            >
+          <span
+            v-for="tag in project.tags"
+            :key="tag"
+            class="px-2.5 py-1 rounded-sm text-xs font-medium bg-primary/20 text-accent-foreground"
+          >
             {{ tag }}
           </span>
         </div>
@@ -82,8 +79,8 @@ useSeoMeta({
       </div>
     </div>
 
-    <p v-else class="text-center text-muted-foreground py-12">
-      No projects yet.
+    <p v-else class="text-center text-muted-foreground py-12 reveal">
+      {{ t("projects_page.empty") }}
     </p>
   </div>
 </template>

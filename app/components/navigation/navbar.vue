@@ -10,7 +10,9 @@ const isSearchOpen = ref(false);
 const isSidebarOpen = ref(false);
 
 const query = ref("");
-const results = ref<{ title: string; description: string; path: string; type: string }[]>([]);
+const results = ref<
+  { title: string; description: string; path: string; type: string }[]
+>([]);
 const searching = ref(false);
 let debounceTimer: ReturnType<typeof setTimeout>;
 
@@ -304,11 +306,17 @@ const navLinkClass = (path: string) => {
             />
           </div>
 
-          <div v-if="searching" class="mt-4 text-center text-sm text-muted-foreground">
+          <div
+            v-if="searching"
+            class="mt-4 text-center text-sm text-muted-foreground"
+          >
             Searching...
           </div>
 
-          <div v-else-if="results.length" class="mt-4 flex flex-col gap-2 max-h-80 overflow-y-auto">
+          <div
+            v-else-if="results.length"
+            class="mt-4 flex flex-col gap-2 max-h-80 overflow-y-auto"
+          >
             <NuxtLink
               v-for="result in results"
               :key="result.path + result.type"
@@ -319,9 +327,11 @@ const navLinkClass = (path: string) => {
               <div class="flex items-center gap-2">
                 <span
                   class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider"
-                  :class="result.type === 'blog'
-                    ? 'bg-primary/10 text-primary'
-                    : 'bg-secondary text-secondary-foreground'"
+                  :class="
+                    result.type === 'blog'
+                      ? 'bg-primary/10 text-primary'
+                      : 'bg-secondary text-secondary-foreground'
+                  "
                 >
                   {{ result.type }}
                 </span>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
+useScrollReveal();
+
 const emailAddr = `${t("contact_page.email_user")}@${t("contact_page.email_domain")}`;
 const emailAlt = `${t("contact_page.email_alt_user")}@${t("contact_page.email_alt_domain")}`;
 
@@ -89,23 +91,21 @@ useSeoMeta({
 
 <template>
   <div class="flex flex-col gap-8 py-12">
-    <div class="text-center">
+    <div class="text-center reveal">
       <h1 class="text-3xl sm:text-4xl font-bold">
         {{ t("contact_page.title") }}
       </h1>
-      <p class="mt-2 text-muted-foreground">
-        {{ t("contact_page.description") }}
-      </p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" dir="ltr">
       <a
-        v-for="link in links"
+        v-for="(link, i) in links"
         :key="link.label"
         :href="link.href"
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center gap-4 rounded-lg border p-5 transition-all duration-200 hover:border-primary/50 hover:shadow-md group"
+        class="flex items-center gap-4 rounded-lg border p-5 transition-all duration-200 hover:border-primary/50 hover:shadow-md group reveal"
+        :style="{ animationDelay: `${i * 100}ms` }"
       >
         <div
           class="size-10 rounded-lg bg-muted flex items-center justify-center shrink-0"
@@ -122,7 +122,10 @@ useSeoMeta({
       </a>
     </div>
 
-    <form class="rounded-lg border p-6 space-y-4" @submit.prevent="submitForm">
+    <form
+      class="rounded-lg border p-6 space-y-4 reveal"
+      @submit.prevent="submitForm"
+    >
       <div class="space-y-1.5">
         <label class="text-sm font-medium">{{
           t("contact_page.form_name")

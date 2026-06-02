@@ -5,10 +5,12 @@
       aria-hidden="true"
     >
       <div
-        class="absolute -start-20 top-10 size-72 animate-blob rounded-full bg-primary/5 blur-3xl"
+        v-if="showBlobs"
+        class="absolute -start-20 -top-20 size-96 animate-blob-fish rounded-full bg-gradient-to-br from-primary/25 to-primary/5 blur-3xl"
       />
       <div
-        class="absolute -end-20 top-10 size-72 animate-blob rounded-full bg-primary/5 blur-3xl"
+        v-if="showBlobs"
+        class="absolute -end-20 -bottom-20 size-96 animate-blob rounded-full bg-gradient-to-tl from-primary/20 to-primary/5 blur-3xl"
         style="animation-delay: 6s"
       />
     </div>
@@ -23,4 +25,10 @@
 <script setup lang="ts">
 import Navbar from "~/components/navigation/navbar.vue";
 import Footer from "~/components/navigation/footer.vue";
+
+const route = useRoute();
+const showBlobs = computed(() => {
+  const segments = route.path.split("/").filter(Boolean);
+  return !segments.includes("blog");
+});
 </script>

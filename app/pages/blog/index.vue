@@ -3,6 +3,8 @@ import type { Collections } from "@nuxt/content";
 
 const { locale, t } = useI18n();
 
+useScrollReveal();
+
 const localePrefix = computed(() => (locale.value === "fa" ? "/fa" : ""));
 
 function extractTextFromMinimark(node: any): string {
@@ -43,32 +45,44 @@ useSeoMeta({
 
 <template>
   <div class="flex flex-col gap-8 py-12">
-    <div class="text-center">
+    <div class="text-center reveal">
       <h1 class="text-3xl sm:text-4xl font-bold">
         {{ t("blog_page.title") }}
       </h1>
-      <p class="mt-2 text-muted-foreground">
-        {{ t("blog_page.description") }}
-      </p>
     </div>
 
     <div v-if="posts?.length" class="flex flex-col gap-6">
       <NuxtLink
-        v-for="post in posts"
+        v-for="(post, i) in posts"
         :key="post.id"
         :to="`${localePrefix}${post.path}`"
-        class="rounded-lg border p-6 transition-all duration-200 hover:border-primary/50 hover:shadow-md group"
+        class="rounded-lg border p-6 transition-all duration-200 hover:border-primary/50 hover:shadow-md group reveal"
+        :style="{ animationDelay: `${i * 100}ms` }"
       >
-        <h2 class="text-lg font-semibold group-hover:text-primary transition-colors">
+        <h2
+          class="text-lg font-semibold group-hover:text-primary transition-colors"
+        >
           {{ post.title }}
         </h2>
 
-        <div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-muted-foreground">
-          <time v-if="post.date" class="inline-flex items-baseline gap-1.5 whitespace-nowrap">
+        <div
+          class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
+        >
+          <time
+            v-if="post.date"
+            class="inline-flex items-baseline gap-1.5 whitespace-nowrap"
+          >
             <Icon name="lucide:calendar" class="size-4.5 self-center -mt-1" />
-            {{ new Date(post.date).toLocaleDateString(locale === "fa" ? "fa" : "en", {
-              year: "numeric", month: "long", day: "numeric"
-            }) }}
+            {{
+              new Date(post.date).toLocaleDateString(
+                locale === "fa" ? "fa" : "en",
+                {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                },
+              )
+            }}
           </time>
           <span class="inline-flex items-baseline gap-1.5 whitespace-nowrap">
             <Icon name="lucide:clock" class="size-4.5 self-center -mt-1" />
@@ -80,24 +94,29 @@ useSeoMeta({
           {{ post.description }}
         </p>
 
-        <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-sm">
+        <div
+          class="mt-4 flex flex-wrap items-center justify-between gap-2 text-sm"
+        >
           <span v-if="post.tags?.length" class="flex flex-wrap gap-1.5">
             <span
               v-for="tag in post.tags"
               :key="tag"
-              class="px-2.5 py-1 rounded-sm text-xs font-medium bg-primary/10 text-primary"
+              class="px-2.5 py-1 rounded-sm text-xs font-medium bg-primary/20 text-accent-foreground"
             >
               {{ tag }}
             </span>
           </span>
           <span class="font-medium text-primary">
-            {{ t("blog_page.read_more") }} <span class="text-3xl leading-none">{{ locale === "fa" ? "\u2190" : "\u2192" }}</span>
+            {{ t("blog_page.read_more") }}
+            <span class="text-3xl leading-none">{{
+              locale === "fa" ? "\u2190" : "\u2192"
+            }}</span>
           </span>
         </div>
       </NuxtLink>
     </div>
 
-    <p v-else class="text-center text-muted-foreground py-12">
+    <p v-else class="text-center text-muted-foreground py-12 reveal">
       {{ t("blog_page.empty") }}
     </p>
   </div>
