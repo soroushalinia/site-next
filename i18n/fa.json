@@ -1,18 +1,64 @@
 {
     "navbar": {
         "home": "خانه",
+        "about": "درباره",
         "projects": "پروژه‌ها",
         "blog": "بلاگ",
         "contact": "ارتباط",
         "search": "جستجو",
-        "search_placeholder": "مقاله‌ها، تگ‌ها و موارد دیگر را جستجو کنید...",
+        "search_placeholder": "جستجوی پست‌ها، پروژه‌ها و موارد دیگر...",
         "search_hint": "برای جستجو Enter را بزنید"
     },
     "home_page": {
-        "title": "صفحه اصلی",
-        "description": "به وبسایت ما خوش آمدید!"
+        "title": "خانه",
+        "description": "به وبسایت من خوش آمدید",
+        "cta_projects": "مشاهده پروژه‌ها",
+        "cta_contact": "ارتباط با من",
+        "featured_title": "پروژه‌های شاخص"
+    },
+    "about_page": {
+        "title": "درباره",
+        "description": "بیشتر درباره من بدانید",
+        "bio": "من یک توسعه‌دهنده فول‌استک هستم که به ساخت برنامه‌های مدرن وب علاقه دارم. از کار با فناوری‌های روز و مشارکت در پروژه‌های متن‌باز لذت می‌برم.",
+        "experience_title": "تجربیات",
+        "skills_title": "مهارت‌ها"
+    },
+    "projects_page": {
+        "title": "پروژه‌ها",
+        "description": "چیزهایی که ساخته‌ام"
+    },
+    "blog_page": {
+        "title": "بلاگ",
+        "description": "مقاله‌ها و یادداشت‌ها",
+        "empty": "هنوز پستی وجود ندارد.",
+        "read_more": "ادامه مطلب"
+    },
+    "contact_page": {
+        "title": "ارتباط",
+        "description": "با من در تماس باشید",
+        "email": "ایمیل",
+        "email_user": "soroushalinia.dev",
+        "email_domain": "gmail.com",
+        "email_alt_user": "contact",
+        "email_alt_domain": "soroushalinia.ir",
+        "github": "گیت‌هاب",
+        "linkedin": "لینکدین",
+        "x": "ایکس",
+        "form_name": "نام",
+        "form_email": "ایمیل",
+        "form_message": "پیام",
+        "form_submit": "ارسال پیام",
+        "form_success": "پیام با موفقیت ارسال شد.",
+        "form_error": "خطایی رخ داد. لطفا دوباره تلاش کنید.",
+        "form_placeholder_name": "نام شما",
+        "form_placeholder_email": "ایمیل شما",
+        "form_placeholder_message": "پیام شما..."
     },
     "footer": {
-        "copyright": "تمام حقوق محفوظ است."
+        "copyright": "سروش علی نیا. تمام حقوق محفوظ است."
+    },
+    "blog_post": {
+        "min_read": "{n} دقیقه مطالعه",
+        "table_of_contents": "فهرست مطالب"
     }
 }

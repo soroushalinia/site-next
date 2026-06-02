@@ -28,7 +28,23 @@
 }
 
 .font-mono {
-  font-family: "JetBrains Mono", monospace;
+  font-variant-ligatures: normal;
+  font-feature-settings: "liga" 1, "calt" 1, "cv02" 1, "cv03" 1, "cv04" 1, "cv10" 1, "cv11" 1, "cv17" 1, "cv18" 1;
+}
+
+pre, code, kbd, samp {
+  font-variant-ligatures: normal !important;
+  font-feature-settings: "liga" 1, "calt" 1 !important;
+}
+
+html:not(.dark) pre {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+}
+
+pre {
+  font-variant-ligatures: normal !important;
+  font-feature-settings: "liga" 1, "calt" 1 !important;
 }
 
 @theme {
@@ -71,6 +87,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
+  --font-mono: "JetBrains Mono", monospace;
   --font-display: "Vazirmatn", "Roboto", sans-serif;
 }
 
@@ -105,7 +122,7 @@
     font-size: var(--btn-font-md);
     font-weight: 500;
     line-height: 1;
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-md);
     border: 1px solid transparent;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -237,6 +254,22 @@
   }
 }
 
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(20px, -10px) scale(1.05);
+  }
+  66% {
+    transform: translate(-15px, 10px) scale(0.97);
+  }
+}
+
+@utility animate-blob {
+  animation: blob 18s ease-in-out infinite;
+}
+
 :root {
   --radius: 0.625rem;
 
@@ -344,4 +377,13 @@
 
   --brand-color: var(--primary);
   --surface-color: var(--background);
+}
+
+@counter-style persian-decimal {
+  system: numeric;
+  symbols: "۰" "۱" "۲" "۳" "۴" "۵" "۶" "۷" "۸" "۹";
+}
+
+.fa-footnotes .footnotes ol {
+  list-style-type: persian-decimal;
 }

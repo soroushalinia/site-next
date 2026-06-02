@@ -1,0 +1,6 @@
+{
+  "title": "OpenCode",
+  "description": "An open-source AI coding assistant that runs in your terminal. It helps developers write, edit, and understand code through natural language interactions.",
+  "tags": ["TypeScript", "CLI", "AI", "Open Source"],
+  "github": "https://github.com/anomalyco/opencode"
+}

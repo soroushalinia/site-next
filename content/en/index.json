@@ -1,4 +1,53 @@
 {
   "title": "Home",
-  "description": "Welcome to my site"
+  "description": "Soroush Alinia — Full-stack developer and software engineer",
+  "hero": {
+    "greeting": "Soroush Alinia",
+    "subtitle": "Full-stack Developer",
+    "description": "I build modern web applications with cutting-edge technologies. Passionate about clean code, great UX, and open source."
+  },
+  "about": {
+    "experience": [
+      {
+        "period": "2024 — Present",
+        "title": "Senior Full-stack Developer",
+        "company": "Tech Company",
+        "description": "Building modern web applications with Nuxt, Vue, and Tailwind CSS. Leading frontend architecture and mentoring junior developers."
+      },
+      {
+        "period": "2022 — 2024",
+        "title": "Full-stack Developer",
+        "company": "Startup Inc.",
+        "description": "Developed and maintained multiple client projects using Vue.js and Node.js. Improved development workflows and code quality."
+      },
+      {
+        "period": "2020 — 2022",
+        "title": "Frontend Developer",
+        "company": "Web Agency",
+        "description": "Built responsive and accessible user interfaces. Collaborated with design team to implement pixel-perfect designs."
+      }
+    ],
+    "skills": [
+      {
+        "category": "Languages",
+        "items": ["Python", "Golang", "JavaScript", "TypeScript", "Bash"],
+        "icon": "i-lucide-code-2"
+      },
+      {
+        "category": "DevOps & Tools",
+        "items": ["Linux", "Docker", "Kubernetes", "Terraform", "Ansible", "Nginx", "Traefik", "GitLab CI/CD", "ArgoCD", "Prometheus", "Grafana", "ELK Stack", "RabbitMQ", "Kafka", "NATS", "Nexus"],
+        "icon": "i-lucide-cloud"
+      },
+      {
+        "category": "Databases",
+        "items": ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
+        "icon": "i-lucide-database"
+      },
+      {
+        "category": "Frameworks",
+        "items": ["FastAPI", "Django", "Gin", "Gorilla Mux", "Nuxt", "Vue", "Next.js", "React"],
+        "icon": "i-lucide-globe"
+      }
+    ]
+  }
 }

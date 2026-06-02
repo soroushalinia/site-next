@@ -1,0 +1,7 @@
+{
+  "title": "Site Next",
+  "description": "A personal portfolio and blog built with Nuxt 4, featuring i18n support, dark mode, and a modern design system.",
+  "tags": ["Nuxt 4", "Vue 3", "Tailwind CSS", "TypeScript"],
+  "github": "https://github.com/soroushalinia/site-next",
+  "live": "https://soroushalinia.ir"
+}

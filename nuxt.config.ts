@@ -29,14 +29,46 @@ export default defineNuxtConfig({
   },
   icon: {
     serverBundle: {
-      collections: ["lucide", "simple-icons"],
+      collections: ["lucide", "simple-icons", "heroicons"],
     },
   },
   colorMode: {
     classSuffix: "",
     preference: "dark",
   },
-  content: {},
+  mdc: {
+    highlight: {
+      theme: {
+        default: "catppuccin-mocha",
+        dark: "catppuccin-mocha",
+        light: "catppuccin-mocha",
+      },
+      langs: [
+        "js",
+        "jsx",
+        "json",
+        "ts",
+        "tsx",
+        "vue",
+        "css",
+        "html",
+        "bash",
+        "md",
+        "mdc",
+        "yaml",
+        "scss",
+        "typescript",
+        "python",
+      ],
+    },
+  },
+  content: {
+    build: {
+      markdown: {
+        contentHeading: true,
+      },
+    },
+  },
   i18n: {
     baseUrl: "https://soroushalinia.ir",
     locales: [
@@ -58,5 +90,10 @@ export default defineNuxtConfig({
     strategy: "prefix_except_default",
     defaultLocale: "en",
     langDir: "",
+  },
+  runtimeConfig: {
+    public: {
+      web3formsKey: "",
+    },
   },
 });

@@ -1,18 +1,64 @@
 {
     "navbar": {
         "home": "Home",
+        "about": "About",
         "projects": "Projects",
         "blog": "Blog",
         "contact": "Contact",
         "search": "Search",
-        "search_placeholder": "Search for articles, tags, and more...",
+        "search_placeholder": "Search blog posts, projects, and more...",
         "search_hint": "Press Enter to search"
     },
     "home_page": {
-        "title": "Home Page",
-        "description": "Welcome to our website!"
+        "title": "Home",
+        "description": "Welcome to my site",
+        "cta_projects": "View Projects",
+        "cta_contact": "Get in Touch",
+        "featured_title": "Featured Projects"
+    },
+    "about_page": {
+        "title": "About",
+        "description": "Learn more about me",
+        "bio": "I'm a full-stack developer passionate about building modern web applications. I enjoy working with cutting-edge technologies and contributing to open source projects.",
+        "experience_title": "Experience",
+        "skills_title": "Skills"
+    },
+    "projects_page": {
+        "title": "Projects",
+        "description": "Things I've built"
+    },
+    "blog_page": {
+        "title": "Blog",
+        "description": "Articles and thoughts",
+        "empty": "No posts yet.",
+        "read_more": "Read more"
+    },
+    "contact_page": {
+        "title": "Contact",
+        "description": "Get in touch with me",
+        "email": "Email",
+        "email_user": "soroushalinia.dev",
+        "email_domain": "gmail.com",
+        "email_alt_user": "contact",
+        "email_alt_domain": "soroushalinia.ir",
+        "github": "GitHub",
+        "linkedin": "LinkedIn",
+        "x": "X",
+        "form_name": "Name",
+        "form_email": "Email",
+        "form_message": "Message",
+        "form_submit": "Send Message",
+        "form_success": "Message submitted successfully.",
+        "form_error": "Something went wrong. Please try again.",
+        "form_placeholder_name": "Your name",
+        "form_placeholder_email": "Your email",
+        "form_placeholder_message": "Your message..."
     },
     "footer": {
-        "copyright": "All rights reserved."
+        "copyright": "Soroush Alinia. All rights reserved."
+    },
+    "blog_post": {
+        "min_read": "{n} min read",
+        "table_of_contents": "Table of Contents"
     }
 }

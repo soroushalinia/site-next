@@ -1,4 +1,53 @@
 {
   "title": "خانه",
-  "description": "به وبسایت من خوش آمدید"
+  "description": "سروش علینیا — توسعه‌دهنده فول‌استک و مهندس نرم‌افزار",
+  "hero": {
+    "greeting": "سروش علی نیا",
+    "subtitle": "توسعه‌دهنده فول‌استک",
+    "description": "برنامه‌های مدرن وب را با فناوری‌های روز می‌سازم. به کد تمیز، تجربه کاربری عالی و متن‌باز علاقه دارم."
+  },
+  "about": {
+    "experience": [
+      {
+        "period": "۲۰۲۴ — اکنون",
+        "title": "توسعه‌دهنده ارشد فول‌استک",
+        "company": "شرکت فناوری",
+        "description": "ساخت برنامه‌های مدرن وب با Nuxt، Vue و Tailwind CSS. رهبری معماری فرانت‌اند و منتورینگ توسعه‌دهندگان تازه‌کار."
+      },
+      {
+        "period": "۲۰۲۲ — ۲۰۲۴",
+        "title": "توسعه‌دهنده فول‌استک",
+        "company": "استارتاپ",
+        "description": "توسعه و نگهداری پروژه‌های مختلف با Vue.js و Node.js. بهبود گردش کار توسعه و کیفیت کد."
+      },
+      {
+        "period": "۲۰۲۰ — ۲۰۲۲",
+        "title": "توسعه‌دهنده فرانت‌اند",
+        "company": "آژانس وب",
+        "description": "ساخت رابط‌های کاربری واکنش‌گرا و قابل دسترس. همکاری با تیم طراحی برای پیاده‌سازی طرح‌های دقیق."
+      }
+    ],
+    "skills": [
+      {
+        "category": "زبان‌ها",
+        "items": ["Python", "Golang", "JavaScript", "TypeScript", "Bash"],
+        "icon": "i-lucide-code-2"
+      },
+      {
+        "category": "دوآپس و ابزارها",
+        "items": ["Linux", "Docker", "Kubernetes", "Terraform", "Ansible", "Nginx", "Traefik", "GitLab CI/CD", "ArgoCD", "Prometheus", "Grafana", "ELK Stack", "RabbitMQ", "Kafka", "NATS", "Nexus"],
+        "icon": "i-lucide-cloud"
+      },
+      {
+        "category": "پایگاه‌داده",
+        "items": ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
+        "icon": "i-lucide-database"
+      },
+      {
+        "category": "فریم‌ورک‌ها",
+        "items": ["FastAPI", "Django", "Gin", "Gorilla Mux", "Nuxt", "Vue", "Next.js", "React"],
+        "icon": "i-lucide-globe"
+      }
+    ]
+  }
 }

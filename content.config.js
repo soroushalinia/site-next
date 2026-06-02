@@ -8,6 +8,11 @@ export default defineContentConfig({
       schema: z.object({
         title: z.string(),
         description: z.string(),
+        hero: z.object({
+          greeting: z.string(),
+          subtitle: z.string(),
+          description: z.string(),
+        }),
       }),
     }),
     content_fa: defineCollection({
@@ -16,6 +21,33 @@ export default defineContentConfig({
       schema: z.object({
         title: z.string(),
         description: z.string(),
+        hero: z.object({
+          greeting: z.string(),
+          subtitle: z.string(),
+          description: z.string(),
+        }),
+      }),
+    }),
+    projects_en: defineCollection({
+      type: "data",
+      source: "en/projects/*.json",
+      schema: z.object({
+        title: z.string(),
+        description: z.string(),
+        tags: z.array(z.string()),
+        github: z.string().optional(),
+        live: z.string().optional(),
+      }),
+    }),
+    projects_fa: defineCollection({
+      type: "data",
+      source: "fa/projects/*.json",
+      schema: z.object({
+        title: z.string(),
+        description: z.string(),
+        tags: z.array(z.string()),
+        github: z.string().optional(),
+        live: z.string().optional(),
       }),
     }),
     blog_en: defineCollection({
@@ -24,6 +56,12 @@ export default defineContentConfig({
         include: "en/blog/**",
         prefix: "/blog",
       },
+      schema: z.object({
+        title: z.string(),
+        description: z.string(),
+        date: z.string().optional(),
+        tags: z.array(z.string()).optional(),
+      }),
     }),
     blog_fa: defineCollection({
       type: "page",
@@ -31,6 +69,12 @@ export default defineContentConfig({
         include: "fa/blog/**",
         prefix: "/blog",
       },
+      schema: z.object({
+        title: z.string(),
+        description: z.string(),
+        date: z.string().optional(),
+        tags: z.array(z.string()).optional(),
+      }),
     }),
   },
 });

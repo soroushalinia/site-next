@@ -1,8 +1,20 @@
 <template>
-  <div class="h-screen w-full flex flex-col">
+  <div class="min-h-screen w-full flex flex-col">
+    <div
+      class="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      aria-hidden="true"
+    >
+      <div
+        class="absolute -start-20 top-10 size-72 animate-blob rounded-full bg-primary/5 blur-3xl"
+      />
+      <div
+        class="absolute -end-20 top-10 size-72 animate-blob rounded-full bg-primary/5 blur-3xl"
+        style="animation-delay: 6s"
+      />
+    </div>
     <div><Navbar /></div>
-    <div class="h-full w-full flex justify-center">
-      <div class="max-w-7xl w-full px-4 py-8"><slot /></div>
+    <div class="flex-1 w-full flex justify-center">
+      <div class="max-w-4xl w-full px-4 py-8"><slot /></div>
     </div>
     <div><Footer /></div>
   </div>

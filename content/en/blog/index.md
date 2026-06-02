@@ -1,8 +1,10 @@
 ---
-title: Home
-description: Welcome to my site
+title: Welcome
+description: Getting started with the blog
+date: 2026-01-01
+tags: [Meta]
 ---
 
-# My first Page
+# Welcome
 
-Index page
+This is the first post on this blog.

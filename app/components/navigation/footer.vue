@@ -14,6 +14,7 @@ const navigation = computed(() => {
   const p = localePrefix.value;
   return [
     { label: t("navbar.home"), to: p || "/" },
+    { label: t("navbar.about"), to: `${p}/about` },
     { label: t("navbar.projects"), to: `${p}/projects` },
     { label: t("navbar.blog"), to: `${p}/blog` },
     { label: t("navbar.contact"), to: `${p}/contact` },
@@ -66,6 +67,13 @@ const socials = [
         <div class="sm:flex-1 flex justify-end">
           <div class="flex items-center gap-3">
             <a
+              href="mailto:soroushalinia.dev@gmail.com"
+              class="text-muted-foreground hover:text-foreground transition-colors duration-200"
+              dir="ltr"
+            >
+              <UIcon name="i-lucide-mail" class="size-4" />
+            </a>
+            <a
               v-for="social in socials"
               :key="social.label"
               :href="social.href"
@@ -79,9 +87,9 @@ const socials = [
         </div>
       </div>
 
-      <p class="mt-4 text-center text-xs text-muted-foreground">
+      <div class="mt-4 text-center text-xs text-muted-foreground">
         &copy; {{ year }} {{ t("footer.copyright") }}
-      </p>
+      </div>
     </div>
   </footer>
 </template>

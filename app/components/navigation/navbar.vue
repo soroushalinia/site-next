@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Collections } from "@nuxt/content";
+
 const route = useRoute();
 
 const colorMode = useColorMode();
@@ -8,6 +10,9 @@ const isSearchOpen = ref(false);
 const isSidebarOpen = ref(false);
 
 const query = ref("");
+const results = ref<{ title: string; description: string; path: string; type: string }[]>([]);
+const searching = ref(false);
+let debounceTimer: ReturnType<typeof setTimeout>;
 
 const isRtl = computed(() => locale.value === "fa");
 const localePrefix = computed(() => (locale.value === "fa" ? "/fa" : ""));
@@ -16,11 +21,71 @@ const navigation = computed(() => {
   const p = localePrefix.value;
   return [
     { label: t("navbar.home"), to: p || "/" },
+    { label: t("navbar.about"), to: `${p}/about` },
     { label: t("navbar.projects"), to: `${p}/projects` },
     { label: t("navbar.blog"), to: `${p}/blog` },
     { label: t("navbar.contact"), to: `${p}/contact` },
   ];
 });
+
+const doSearch = async () => {
+  const term = query.value.trim();
+  if (!term) {
+    results.value = [];
+    return;
+  }
+
+  searching.value = true;
+
+  try {
+    const blogCollection = ("blog_" + locale.value) as keyof Collections;
+    const projectCollection = ("projects_" + locale.value) as keyof Collections;
+
+    const [blogResults, projectResults] = await Promise.all([
+      queryCollection(blogCollection)
+        .where("title", "LIKE", `%${term}%`)
+        .all()
+        .catch(() => []),
+      queryCollection(projectCollection)
+        .where("title", "LIKE", `%${term}%`)
+        .all()
+        .catch(() => []),
+    ]);
+
+    const mappedBlog = (blogResults || [])
+      .filter((p: any) => !p.path?.endsWith("/index"))
+      .map((p: any) => ({
+        title: p.title,
+        description: p.description || "",
+        path: `${localePrefix.value}${p.path || `/blog/${p.id}`}`,
+        type: "blog",
+      }));
+
+    const mappedProjects = (projectResults || []).map((p: any) => ({
+      title: p.title,
+      description: p.description || "",
+      path: `${localePrefix.value}/projects`,
+      type: "project",
+    }));
+
+    results.value = [...mappedBlog, ...mappedProjects].slice(0, 8);
+  } catch {
+    results.value = [];
+  } finally {
+    searching.value = false;
+  }
+};
+
+const onQueryInput = () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(doSearch, 300);
+};
+
+const closeSearch = () => {
+  isSearchOpen.value = false;
+  query.value = "";
+  results.value = [];
+};
 
 const toggleTheme = () => {
   colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
@@ -28,7 +93,6 @@ const toggleTheme = () => {
 
 const switchLocale = () => {
   const current = (locale.value ?? "en") as "en" | "fa";
-
   setLocale(current === "fa" ? "en" : "fa");
 };
 
@@ -236,7 +300,47 @@ const navLinkClass = (path: string) => {
               :ui="{
                 base: 'rounded-lg',
               }"
+              @update:model-value="onQueryInput"
             />
+          </div>
+
+          <div v-if="searching" class="mt-4 text-center text-sm text-muted-foreground">
+            Searching...
+          </div>
+
+          <div v-else-if="results.length" class="mt-4 flex flex-col gap-2 max-h-80 overflow-y-auto">
+            <NuxtLink
+              v-for="result in results"
+              :key="result.path + result.type"
+              :to="result.path"
+              class="flex flex-col gap-1 rounded-lg border p-3 transition-all duration-200 hover:border-primary/50 hover:bg-muted/50"
+              @click="closeSearch"
+            >
+              <div class="flex items-center gap-2">
+                <span
+                  class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider"
+                  :class="result.type === 'blog'
+                    ? 'bg-primary/10 text-primary'
+                    : 'bg-secondary text-secondary-foreground'"
+                >
+                  {{ result.type }}
+                </span>
+                <p class="text-sm font-medium truncate">{{ result.title }}</p>
+              </div>
+              <p
+                v-if="result.description"
+                class="text-xs text-muted-foreground line-clamp-1"
+              >
+                {{ result.description }}
+              </p>
+            </NuxtLink>
+          </div>
+
+          <div
+            v-else-if="query && !searching"
+            class="mt-4 text-center text-sm text-muted-foreground"
+          >
+            No results found.
           </div>
 
           <div
