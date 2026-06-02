@@ -338,7 +338,8 @@ useHead({
 
       <div
         ref="contentRef"
-        class="content-body [&_pre]:!direction-ltr [&_pre]:!text-left [&_code]:!direction-ltr [&_pre_code]:!font-mono [&_code]:!font-mono"
+        class="content-body [&_pre_code]:!font-mono [&_code]:!font-mono"
+        :class="locale === 'fa' ? 'content-fa' : ''"
       >
         <ContentRenderer :value="post" />
       </div>

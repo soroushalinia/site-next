@@ -428,6 +428,25 @@ pre {
   list-style-type: persian-decimal;
 }
 
+/* Persian locale: render ordered-list numbers with Persian digits. */
+.content-fa ol {
+  list-style-type: persian-decimal;
+}
+
+/* Code is always left-to-right, even inside an RTL article, so lines stay
+   left-aligned and horizontal scrolling behaves correctly. */
+.content-body pre {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Inline code stays LTR and is bidi-isolated so the surrounding RTL text and
+   its punctuation aren't reordered around the snippet. */
+.content-body :not(pre) > code {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
 @keyframes fade-in-up {
   from {
     opacity: 0;
