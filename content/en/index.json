@@ -1,9 +1,9 @@
 {
   "title": "Home",
-  "description": "Soroush Alinia — Full-stack developer and software engineer",
+  "description": "Soroush Alinia — Software Engineer",
   "hero": {
     "greeting": "Soroush Alinia",
-    "subtitle": "Full-stack Developer",
+    "subtitle": "Software Engineer",
     "description": "I build modern web applications with cutting-edge technologies. Passionate about clean code, great UX, and open source."
   },
   "about": {

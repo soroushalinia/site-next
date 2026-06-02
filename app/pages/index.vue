@@ -72,6 +72,9 @@ useSeoMeta({
         <img
           src="/avatar.jpg"
           alt="Soroush Alinia"
+          width="144"
+          height="144"
+          loading="lazy"
           class="size-full rounded-full object-cover bg-background"
         />
       </div>

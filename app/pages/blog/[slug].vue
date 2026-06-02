@@ -124,8 +124,6 @@ function extractTocFromBody(
 const tocLinks = computed(() => {
   const body = post.value?.body?.value;
   if (!body) return [];
-  // The auto-generated footnotes section uses a fixed English heading
-  // ("Footnotes", id="footnote-label"); localize its TOC label.
   return extractTocFromBody(body).map((link) =>
     link.id === "footnote-label"
       ? { ...link, text: t("blog_post.footnotes") }

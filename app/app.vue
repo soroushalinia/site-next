@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 const route = useRoute();
+const { t } = useI18n();
 const head = useLocaleHead({ dir: true, lang: true, seo: true });
 const {
   public: { siteUrl = "https://soroushalinia.ir" },
@@ -26,9 +27,7 @@ const websiteSchema = computed(() =>
         "https://linkedin.com/in/soroushalinia",
         "https://x.com/xero_dl",
       ],
-      jobTitle: route.path.startsWith("/fa")
-        ? "مهندس نرم‌افزار"
-        : "Software Engineer",
+      jobTitle: t("home_page.job_title"),
     },
     {
       "@context": "https://schema.org",
