@@ -66,11 +66,11 @@ useSeoMeta({
         class="size-28 sm:size-36 rounded-full bg-gradient-to-tr from-primary/30 via-primary/10 to-primary/30 p-0.5 reveal"
         :style="{ animationDelay: '0ms' }"
       >
-        <div
-          class="size-full rounded-full bg-background flex items-center justify-center text-4xl sm:text-5xl font-bold text-primary"
-        >
-          S
-        </div>
+        <img
+          src="/avatar.jpg"
+          alt="Soroush Alinia"
+          class="size-full rounded-full object-cover bg-background"
+        />
       </div>
 
       <div class="space-y-1 reveal" :style="{ animationDelay: '100ms' }">
