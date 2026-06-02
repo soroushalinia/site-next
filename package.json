@@ -2,6 +2,7 @@
   "name": "site-next",
   "type": "module",
   "private": true,
+  "packageManager": "pnpm@10.33.2",
   "scripts": {
     "build": "NODE_OPTIONS='--disable-warning=DEP0205' nuxt build",
     "dev": "NODE_OPTIONS='--disable-warning=DEP0205' nuxt dev",
