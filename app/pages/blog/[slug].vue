@@ -4,7 +4,7 @@ import { useLocaleInfo } from "../../composables/useLocaleInfo";
 
 const { t } = useI18n();
 const { buildPageTitle, siteName } = useSiteSeo();
-const { prefix, isFa, langCode, toDisplayNumber } = useLocaleInfo();
+const { locale, prefix, isFa, langCode, toDisplayNumber } = useLocaleInfo();
 const route = useRoute();
 const {
   public: { siteUrl = "https://soroushalinia.ir" },
@@ -90,6 +90,7 @@ const { data: post } = await useAsyncData(
 
     const content = await fetchLocalizedContent<BlogPost>("blog", {
       path: blogPath,
+      locale: locale.value,
     });
 
     if (content && isFa.value && content.body?.value) {
@@ -111,7 +112,11 @@ function extractTextFromMinimark(node: unknown): string {
   if (!node) return "";
   if (typeof node === "string") return node;
   if (Array.isArray(node)) {
-    return node.map(extractTextFromMinimark).join(" ");
+    const children =
+      node[1] && typeof node[1] === "object" && !Array.isArray(node[1])
+        ? node.slice(2)
+        : node;
+    return children.map(extractTextFromMinimark).join(" ");
   }
   return "";
 }
@@ -139,7 +144,7 @@ const readingTime = computed(() => {
   if (!Array.isArray(value)) return 1;
   const text = extractTextFromMinimark(value);
   const words = text.split(/\s+/).filter(Boolean).length;
-  const minutes = Math.max(1, Math.ceil(words / 200));
+  const minutes = Math.max(1, Math.ceil(words / 275));
   return toDisplayNumber(minutes);
 });
 
@@ -311,34 +316,6 @@ useHead({
 
 <template>
   <div v-if="post" class="py-12 px-4">
-    <nav
-      v-if="numberedToc.length"
-      class="mb-8 rounded-lg border bg-card p-4"
-      aria-label="Table of contents"
-    >
-      <p class="text-sm font-semibold mb-2">
-        {{ t("blog_post.table_of_contents") }}
-      </p>
-      <ul class="space-y-1">
-        <li v-for="link in numberedToc" :key="link.id" class="text-sm">
-          <a
-            :href="`#${link.id}`"
-            class="text-muted-foreground hover:text-foreground transition-colors"
-            :class="{
-              'font-semibold text-foreground': link.depth <= 1,
-              'pr-4': isFa && link.depth === 3,
-              'pl-4': !isFa && link.depth === 3,
-            }"
-          >
-            <span class="text-primary/60 font-medium tabular-nums ml-1.5"
-              >{{ link.number }}.</span
-            >
-            {{ link.text }}
-          </a>
-        </li>
-      </ul>
-    </nav>
-
     <article
       :dir="isFa ? 'rtl' : 'ltr'"
       :class="['mx-auto max-w-none', isFa ? 'fa-footnotes' : '']"
@@ -386,6 +363,34 @@ useHead({
           </span>
         </div>
       </header>
+
+      <nav
+        v-if="numberedToc.length"
+        class="mb-8 rounded-lg border bg-card p-4"
+        aria-label="Table of contents"
+      >
+        <p class="text-sm font-semibold mb-2">
+          {{ t("blog_post.table_of_contents") }}
+        </p>
+        <ul class="space-y-1">
+          <li v-for="link in numberedToc" :key="link.id" class="text-sm">
+            <a
+              :href="`#${link.id}`"
+              class="text-muted-foreground hover:text-foreground transition-colors"
+              :class="{
+                'font-semibold text-foreground': link.depth <= 1,
+                'pr-4': isFa && link.depth === 3,
+                'pl-4': !isFa && link.depth === 3,
+              }"
+            >
+              <span class="text-primary/60 font-medium tabular-nums ml-1.5"
+                >{{ link.number }}.</span
+              >
+              {{ link.text }}
+            </a>
+          </li>
+        </ul>
+      </nav>
 
       <div
         ref="contentRef"

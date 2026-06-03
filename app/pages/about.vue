@@ -4,13 +4,13 @@ import { useLocaleInfo } from "../composables/useLocaleInfo";
 
 const { t } = useI18n();
 const { buildPageTitle } = useSiteSeo();
-const { prefix, isFa } = useLocaleInfo();
+const { locale, prefix, isFa } = useLocaleInfo();
 
 useScrollReveal();
 
 const { data: page } = await useAsyncData(
   "about-" + prefix.value,
-  () => fetchLocalizedContent("content", { first: true }),
+  () => fetchLocalizedContent("content", { first: true, locale: locale.value }),
   { watch: [prefix] },
 );
 

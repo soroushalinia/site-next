@@ -4,14 +4,20 @@ import { useLocaleInfo } from "../../composables/useLocaleInfo";
 
 const { t } = useI18n();
 const { buildPageTitle } = useSiteSeo();
-const { prefix, isFa, toDisplayNumber } = useLocaleInfo();
+const { locale, prefix, isFa, toDisplayNumber } = useLocaleInfo();
 
 useScrollReveal();
 
 function extractTextFromMinimark(node: unknown): string {
   if (!node) return "";
   if (typeof node === "string") return node;
-  if (Array.isArray(node)) return node.map(extractTextFromMinimark).join(" ");
+  if (Array.isArray(node)) {
+    const children =
+      node[1] && typeof node[1] === "object" && !Array.isArray(node[1])
+        ? node.slice(2)
+        : node;
+    return children.map(extractTextFromMinimark).join(" ");
+  }
   return "";
 }
 
@@ -22,7 +28,7 @@ function getReadingTime(body: { value?: unknown }): string {
         1,
         Math.ceil(
           extractTextFromMinimark(value).split(/\s+/).filter(Boolean).length /
-            200,
+            275,
         ),
       )
     : 1;
@@ -42,7 +48,10 @@ interface BlogPost {
 const { data: posts } = await useAsyncData(
   "blog-index-" + prefix.value,
   async () => {
-    const postList = (await fetchLocalizedContent<BlogPost[]>("blog")) ?? [];
+    const postList =
+      (await fetchLocalizedContent<BlogPost[]>("blog", {
+        locale: locale.value,
+      })) ?? [];
     return postList
       .filter((p) => !p.path?.endsWith("/index"))
       .sort(

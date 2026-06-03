@@ -13,7 +13,7 @@ useScrollReveal();
 
 const { data: page } = await useAsyncData(
   "page-index-" + prefix.value,
-  () => fetchLocalizedContent("content", { first: true }),
+  () => fetchLocalizedContent("content", { first: true, locale: locale.value }),
   { watch: [prefix] },
 );
 
@@ -26,7 +26,10 @@ const { data: featuredProjects } = await useAsyncData(
       description?: string;
       tags?: string[];
     }
-    const projects = (await fetchLocalizedContent<Project[]>("projects")) ?? [];
+    const projects =
+      (await fetchLocalizedContent<Project[]>("projects", {
+        locale: locale.value,
+      })) ?? [];
     return projects.slice(0, 2);
   },
   { watch: [prefix] },
@@ -42,7 +45,9 @@ const { data: recentPosts } = await useAsyncData(
       path?: string;
       date?: string;
     }
-    const posts = (await fetchLocalizedContent<Post[]>("blog")) ?? [];
+    const posts =
+      (await fetchLocalizedContent<Post[]>("blog", { locale: locale.value })) ??
+      [];
     const filtered = posts
       .filter((p) => !p.path?.endsWith("/index"))
       .sort(

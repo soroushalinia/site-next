@@ -4,7 +4,7 @@ import { useLocaleInfo } from "../composables/useLocaleInfo";
 
 const { t } = useI18n();
 const { buildPageTitle } = useSiteSeo();
-const { prefix } = useLocaleInfo();
+const { locale, prefix } = useLocaleInfo();
 
 useScrollReveal();
 
@@ -19,7 +19,7 @@ interface Project {
 
 const { data: projects } = await useAsyncData(
   "projects-" + prefix.value,
-  () => fetchLocalizedContent<Project[]>("projects"),
+  () => fetchLocalizedContent<Project[]>("projects", { locale: locale.value }),
   { watch: [prefix] },
 );
 

@@ -6,11 +6,11 @@ export async function fetchLocalizedContent<T = any>(
   options?: {
     path?: string;
     first?: boolean;
+    locale?: string;
   },
 ): Promise<T | null> {
-  const { locale } = useI18n();
-
-  const collection = `${collectionBase}_${locale.value}` as keyof Collections;
+  const locale = options?.locale ?? "en";
+  const collection = `${collectionBase}_${locale}` as keyof Collections;
   let result: T | null = null;
 
   if (options?.path) {
@@ -25,7 +25,7 @@ export async function fetchLocalizedContent<T = any>(
 
   if (
     (result === null || (Array.isArray(result) && result.length === 0)) &&
-    locale.value !== "en"
+    locale !== "en"
   ) {
     const enCollection = `${collectionBase}_en` as keyof Collections;
     if (options?.path) {

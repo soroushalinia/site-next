@@ -14,6 +14,7 @@ export function useLocaleInfo() {
   };
 
   return {
+    locale,
     isFa,
     prefix,
     langCode,
