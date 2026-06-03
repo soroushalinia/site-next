@@ -136,7 +136,7 @@ const doSearch = async () => {
         return {
           title: p.title,
           description: p.description || "",
-        path: p.path,
+          path: p.path,
           type: "blog" as const,
           score: buildSearchScore(p.title, searchableText, terms),
           matches: terms.every((searchTerm) =>

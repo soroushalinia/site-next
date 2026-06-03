@@ -43,6 +43,12 @@ export default defineNuxtConfig({
     preference: "dark",
   },
   mdc: {
+    remarkPlugins: {
+      "remark-math": {},
+    },
+    rehypePlugins: {
+      "rehype-katex": {},
+    },
     highlight: {
       theme: {
         default: "catppuccin-mocha",
