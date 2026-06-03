@@ -13,7 +13,7 @@ const head = useLocaleHead({ dir: true, lang: true, seo: true });
 const {
   public: { siteUrl = "https://soroushalinia.ir" },
 } = useRuntimeConfig();
-const { siteName, defaultDescription, ogImage, buildPageTitle } = useSiteSeo();
+const { siteName, defaultDescription, buildPageTitle } = useSiteSeo();
 const websiteSchema = computed(() =>
   JSON.stringify([
     {
@@ -21,7 +21,6 @@ const websiteSchema = computed(() =>
       "@type": "Person",
       name: siteName.value,
       url: siteUrl,
-      image: new URL(ogImage, siteUrl).toString(),
       sameAs: [
         "https://github.com/soroushalinia",
         "https://linkedin.com/in/soroushalinia",
@@ -75,15 +74,11 @@ useSeoMeta({
   ogTitle: () => buildPageTitle(),
   ogSiteName: () => siteName.value,
   ogDescription: () => defaultDescription.value,
-  ogImage,
-  ogImageAlt: () => siteName.value,
   ogType: "website",
   ogUrl: () => new URL(route.path || "/", siteUrl).toString(),
   ogLocale: () => (route.path.startsWith("/fa") ? "fa_IR" : "en_US"),
-  twitterCard: "summary_large_image",
+  twitterCard: "summary",
   twitterTitle: () => buildPageTitle(),
   twitterDescription: () => defaultDescription.value,
-  twitterImage: ogImage,
-  twitterImageAlt: () => siteName.value,
 });
 </script>

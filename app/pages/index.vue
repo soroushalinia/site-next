@@ -2,7 +2,7 @@
 import { fetchLocalizedContent } from "../composables/useFetchLocalized";
 import { useLocaleInfo } from "../composables/useLocaleInfo";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const { siteName } = useSiteSeo();
 const { prefix } = useLocaleInfo();
 
@@ -168,7 +168,7 @@ useSeoMeta({
 
       <div class="text-center mt-6 reveal" :style="{ animationDelay: '200ms' }">
         <NuxtLink
-          :to="`${localePrefix}/about`"
+          :to="`${prefix}/about`"
           class="text-sm text-primary hover:underline font-medium"
         >
           {{ t("about_page.description") }}
@@ -191,7 +191,7 @@ useSeoMeta({
         <NuxtLink
           v-for="(project, i) in featuredProjects"
           :key="project.id"
-          :to="`${localePrefix}/projects`"
+          :to="`${prefix}/projects`"
           class="group rounded-lg border bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg reveal"
           :style="{ animationDelay: `${i * 100 + 100}ms` }"
         >
@@ -230,7 +230,7 @@ useSeoMeta({
         <NuxtLink
           v-for="(post, i) in recentPosts"
           :key="post.id"
-          :to="`${localePrefix}${post.path}`"
+          :to="`${prefix}${post.path}`"
           class="rounded-lg border bg-card p-5 transition-all duration-200 hover:border-primary/50 hover:shadow-md group reveal"
           :style="{ animationDelay: `${i * 100 + 100}ms` }"
         >
@@ -377,7 +377,7 @@ useSeoMeta({
           :style="{ animationDelay: '300ms' }"
         >
           <NuxtLink
-            :to="`${localePrefix}/contact`"
+            :to="`${prefix}/contact`"
             class="text-primary hover:underline font-medium"
           >
             {{ t("home_page.contact_alt_cta") }}
