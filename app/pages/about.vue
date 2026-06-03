@@ -109,8 +109,11 @@ useSeoMeta({
         {{ t("about_page.experience_title") }}
       </h2>
 
-      <div class="relative" dir="ltr">
-        <div class="absolute top-0 bottom-0 w-px bg-border left-3" />
+      <div class="relative" :dir="isFa ? 'rtl' : 'ltr'">
+        <div
+          class="absolute top-0 bottom-0 w-px bg-border"
+          :class="isFa ? 'right-3' : 'left-3'"
+        />
 
         <div class="flex flex-col gap-8">
           <div
