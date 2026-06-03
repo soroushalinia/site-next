@@ -72,6 +72,7 @@ const socials = [
               href="mailto:soroushalinia.dev@gmail.com"
               class="text-muted-foreground hover:text-foreground transition-colors duration-200"
               dir="ltr"
+              aria-label="Email"
             >
               <UIcon name="i-lucide-mail" class="size-4" />
             </a>
@@ -82,6 +83,7 @@ const socials = [
               target="_blank"
               rel="noopener noreferrer"
               class="text-muted-foreground hover:text-foreground transition-colors duration-200"
+              :aria-label="social.label"
             >
               <UIcon :name="social.icon" class="size-4" />
             </a>

@@ -22,6 +22,7 @@ interface SearchResult {
   type: "blog" | "project";
   score?: number;
   matches?: boolean;
+  id?: string;
 }
 const results = ref<SearchResult[]>([]);
 const searching = ref(false);
@@ -136,7 +137,8 @@ const doSearch = async () => {
         return {
           title: p.title,
           description: p.description || "",
-          path: p.path,
+          path: p.path || `/blog/${p.id || ""}`,
+          id: p.id,
           type: "blog" as const,
           score: buildSearchScore(p.title, searchableText, terms),
           matches: terms.every((searchTerm) =>
@@ -149,7 +151,7 @@ const doSearch = async () => {
       .map((p: SearchResult) => ({
         title: p.title,
         description: p.description || "",
-        path: `${localePrefix.value}${p.path || `/blog/${p.id}`}`,
+        path: `${localePrefix.value}${p.path}`,
         type: "blog" as const,
       }));
 
@@ -305,6 +307,7 @@ const navLinkClass = (path: string) => {
               variant="soft"
               color="neutral"
               square
+              aria-label="Search"
               @click="isSearchOpen = true"
             >
               <UIcon
@@ -318,6 +321,9 @@ const navLinkClass = (path: string) => {
               color="neutral"
               square
               class="max-sm:hidden"
+              :aria-label="
+                locale === 'fa' ? 'Switch to English' : 'تغییر زبان به فارسی'
+              "
               @click="switchLocale"
             >
               <UIcon name="i-heroicons-language-20-solid" class="size-5" />
@@ -328,6 +334,11 @@ const navLinkClass = (path: string) => {
               color="neutral"
               square
               class="max-sm:hidden"
+              :aria-label="
+                colorMode.value === 'dark'
+                  ? 'Switch to light mode'
+                  : 'Switch to dark mode'
+              "
               @click="toggleTheme"
             >
               <UIcon
@@ -345,6 +356,7 @@ const navLinkClass = (path: string) => {
               variant="soft"
               color="neutral"
               square
+              aria-label="Open menu"
               @click="isSidebarOpen = true"
             >
               <UIcon name="i-heroicons-bars-3-20-solid" class="size-5" />
@@ -368,6 +380,7 @@ const navLinkClass = (path: string) => {
               variant="ghost"
               color="neutral"
               square
+              aria-label="Close menu"
               @click="isSidebarOpen = false"
             >
               <UIcon name="i-heroicons-x-mark-20-solid" class="size-5" />
@@ -397,6 +410,9 @@ const navLinkClass = (path: string) => {
                 variant="soft"
                 color="neutral"
                 class="justify-center"
+                :aria-label="
+                  locale === 'fa' ? 'Switch to English' : 'تغییر زبان به فارسی'
+                "
                 @click="switchLocale"
               >
                 <UIcon name="i-heroicons-language-20-solid" class="size-5" />
@@ -405,6 +421,11 @@ const navLinkClass = (path: string) => {
                 variant="soft"
                 color="neutral"
                 class="justify-center"
+                :aria-label="
+                  colorMode.value === 'dark'
+                    ? 'Switch to light mode'
+                    : 'Switch to dark mode'
+                "
                 @click="toggleTheme"
               >
                 <UIcon

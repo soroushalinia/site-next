@@ -23,7 +23,6 @@ export async function fetchLocalizedContent<T = any>(
     result = (await queryCollection(collection).all()) as unknown as T | null;
   }
 
-  // Fallback to English if not found or if an empty localized collection is returned
   if (
     (result === null || (Array.isArray(result) && result.length === 0)) &&
     locale.value !== "en"

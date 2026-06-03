@@ -1,4 +1,6 @@
 import tailwindcss from "@tailwindcss/vite";
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
 
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
@@ -10,6 +12,27 @@ export default defineNuxtConfig({
       crawlLinks: true,
       failOnError: false,
       routes: ["/", "/fa", "/sitemap.xml"],
+    },
+  },
+  hooks: {
+    "prerender:routes": (ctx) => {
+      const contentDir = join(process.cwd(), "content");
+      const enSlugs = readdirSync(join(contentDir, "en", "blog"))
+        .filter((f) => f.endsWith(".md"))
+        .map((f) => `/blog/${f.replace(/\.md$/, "")}`);
+      const faSlugs = readdirSync(join(contentDir, "fa", "blog"))
+        .filter((f) => f.endsWith(".md"))
+        .map((f) => `/fa/blog/${f.replace(/\.md$/, "")}`);
+      for (const route of [...enSlugs, ...faSlugs]) {
+        ctx.routes.add(route);
+      }
+    },
+  },
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        types: ["node"],
+      },
     },
   },
   css: ["~/assets/css/main.css"],

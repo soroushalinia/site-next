@@ -51,6 +51,11 @@ useHead({
       rel: "canonical",
       href: () => new URL(route.path || "/", siteUrl).toString(),
     },
+    {
+      rel: "preconnect",
+      href: "https://api.web3forms.com",
+      crossorigin: "",
+    },
   ],
   script: [
     {
@@ -67,18 +72,29 @@ useSeoMeta({
   creator: () => siteName.value,
   publisher: () => siteName.value,
   description: () => defaultDescription.value,
-  robots:
-    "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
-  googlebot:
-    "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
   ogTitle: () => buildPageTitle(),
   ogSiteName: () => siteName.value,
   ogDescription: () => defaultDescription.value,
   ogType: "website",
   ogUrl: () => new URL(route.path || "/", siteUrl).toString(),
   ogLocale: () => (route.path.startsWith("/fa") ? "fa_IR" : "en_US"),
-  twitterCard: "summary",
+  twitterCard: "summary_large_image",
   twitterTitle: () => buildPageTitle(),
   twitterDescription: () => defaultDescription.value,
+});
+
+useHead({
+  meta: [
+    {
+      name: "robots",
+      content:
+        "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    },
+    {
+      name: "googlebot",
+      content:
+        "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    },
+  ],
 });
 </script>

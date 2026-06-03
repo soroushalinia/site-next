@@ -47,6 +47,47 @@ const { data: post } = await useAsyncData(
       tags?: string[];
       body?: { value: unknown };
     }
+
+    if (import.meta.server) {
+      try {
+        const { default: Database } = await import("better-sqlite3");
+        const db = new Database(
+          `${process.cwd()}/.data/content/contents.sqlite`,
+        );
+        const tableName = `_content_blog_${isFa.value ? "fa" : "en"}`;
+        const row = db
+          .prepare(`SELECT * FROM ${tableName} WHERE path = ?`)
+          .get(blogPath) as
+          | {
+              title: string;
+              description: string;
+              date: string;
+              body: string;
+              tags: string;
+            }
+          | undefined;
+        db.close();
+        if (row) {
+          const bodyParsed = JSON.parse(row.body);
+          let tags: string[] = [];
+          try {
+            tags = JSON.parse(row.tags);
+          } catch {
+            tags = [];
+          }
+          return {
+            title: row.title,
+            description: row.description,
+            date: row.date || "",
+            tags,
+            body: bodyParsed,
+          } as BlogPost;
+        }
+      } catch {
+        // fall through to queryCollection
+      }
+    }
+
     const content = await fetchLocalizedContent<BlogPost>("blog", {
       path: blogPath,
     });
@@ -247,9 +288,12 @@ useSeoMeta({
   title: () => post.value?.title,
   description: () => post.value?.description,
   articlePublishedTime: () => date.value || undefined,
+  articleTag: () => tags.value,
   ogTitle: () => buildPageTitle(post.value?.title),
   ogDescription: () => post.value?.description,
   ogType: "article",
+  ogLocale: () => (isFa.value ? "fa_IR" : "en_US"),
+  twitterCard: "summary_large_image",
   twitterTitle: () => buildPageTitle(post.value?.title),
   twitterDescription: () => post.value?.description,
 });
@@ -267,6 +311,34 @@ useHead({
 
 <template>
   <div v-if="post" class="py-12 px-4">
+    <nav
+      v-if="numberedToc.length"
+      class="mb-8 rounded-lg border bg-card p-4"
+      aria-label="Table of contents"
+    >
+      <p class="text-sm font-semibold mb-2">
+        {{ t("blog_post.table_of_contents") }}
+      </p>
+      <ul class="space-y-1">
+        <li v-for="link in numberedToc" :key="link.id" class="text-sm">
+          <a
+            :href="`#${link.id}`"
+            class="text-muted-foreground hover:text-foreground transition-colors"
+            :class="{
+              'font-semibold text-foreground': link.depth <= 1,
+              'pr-4': isFa && link.depth === 3,
+              'pl-4': !isFa && link.depth === 3,
+            }"
+          >
+            <span class="text-primary/60 font-medium tabular-nums ml-1.5"
+              >{{ link.number }}.</span
+            >
+            {{ link.text }}
+          </a>
+        </li>
+      </ul>
+    </nav>
+
     <article
       :dir="isFa ? 'rtl' : 'ltr'"
       :class="['mx-auto max-w-none', isFa ? 'fa-footnotes' : '']"
@@ -314,30 +386,6 @@ useHead({
           </span>
         </div>
       </header>
-
-      <nav v-if="numberedToc.length" class="mb-8 rounded-lg border bg-card p-4">
-        <p class="text-sm font-semibold mb-2">
-          {{ t("blog_post.table_of_contents") }}
-        </p>
-        <ul class="space-y-1">
-          <li v-for="link in numberedToc" :key="link.id" class="text-sm">
-            <a
-              :href="`#${link.id}`"
-              class="text-muted-foreground hover:text-foreground transition-colors"
-              :class="{
-                'font-semibold text-foreground': link.depth <= 1,
-                'pr-4': isFa && link.depth === 3,
-                'pl-4': !isFa && link.depth === 3,
-              }"
-            >
-              <span class="text-primary/60 font-medium tabular-nums ml-1.5"
-                >{{ link.number }}.</span
-              >
-              {{ link.text }}
-            </a>
-          </li>
-        </ul>
-      </nav>
 
       <div
         ref="contentRef"

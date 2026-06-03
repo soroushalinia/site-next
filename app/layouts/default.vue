@@ -15,9 +15,9 @@
       />
     </div>
     <div><Navbar /></div>
-    <div class="flex-1 w-full flex justify-center">
+    <main class="flex-1 w-full flex justify-center">
       <div class="max-w-4xl w-full px-4 py-8"><slot /></div>
-    </div>
+    </main>
     <div><Footer /></div>
   </div>
 </template>

@@ -127,6 +127,7 @@ useSeoMeta({
           target="_blank"
           rel="noopener noreferrer"
           class="text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="GitHub"
         >
           <UIcon name="i-lucide-github" class="size-5" />
         </a>
@@ -135,6 +136,7 @@ useSeoMeta({
           target="_blank"
           rel="noopener noreferrer"
           class="text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="LinkedIn"
         >
           <UIcon name="i-lucide-linkedin" class="size-5" />
         </a>
@@ -143,6 +145,7 @@ useSeoMeta({
           target="_blank"
           rel="noopener noreferrer"
           class="text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="X"
         >
           <UIcon name="i-simple-icons-x" class="size-5" />
         </a>
