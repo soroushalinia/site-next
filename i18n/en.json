@@ -10,7 +10,8 @@
         "contact": "Contact",
         "search": "Search",
         "search_placeholder": "Search blog posts, projects, and more...",
-        "search_hint": "Press Enter to search"
+        "search_hint": "Press Enter to search",
+        "search_no_results": "No results found."
     },
     "home_page": {
         "title": "Home",

@@ -1,13 +1,7 @@
 import type { Collections } from "@nuxt/content";
 
-interface ContentItem extends Record<string, unknown> {
-  id?: string;
-  title?: string;
-}
-
-export async function fetchLocalizedContent<
-  T extends ContentItem = ContentItem,
->(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function fetchLocalizedContent<T = any>(
   collectionBase: string,
   options?: {
     path?: string;
@@ -22,11 +16,11 @@ export async function fetchLocalizedContent<
   if (options?.path) {
     result = (await queryCollection(collection)
       .path(options.path)
-      .first()) as T | null;
+      .first()) as unknown as T | null;
   } else if (options?.first) {
-    result = (await queryCollection(collection).first()) as T | null;
+    result = (await queryCollection(collection).first()) as unknown as T | null;
   } else {
-    result = (await queryCollection(collection).all()) as T | null;
+    result = (await queryCollection(collection).all()) as unknown as T | null;
   }
 
   // Fallback to English if not found or if an empty localized collection is returned
@@ -38,11 +32,15 @@ export async function fetchLocalizedContent<
     if (options?.path) {
       result = (await queryCollection(enCollection)
         .path(options.path)
-        .first()) as T | null;
+        .first()) as unknown as T | null;
     } else if (options?.first) {
-      result = (await queryCollection(enCollection).first()) as T | null;
+      result = (await queryCollection(
+        enCollection,
+      ).first()) as unknown as T | null;
     } else {
-      result = (await queryCollection(enCollection).all()) as T | null;
+      result = (await queryCollection(
+        enCollection,
+      ).all()) as unknown as T | null;
     }
   }
 

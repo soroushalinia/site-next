@@ -69,7 +69,7 @@ useSeoMeta({
   description: () => defaultDescription.value,
   robots:
     "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
-  googleBot:
+  googlebot:
     "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
   ogTitle: () => buildPageTitle(),
   ogSiteName: () => siteName.value,

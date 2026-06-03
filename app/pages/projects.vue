@@ -13,6 +13,8 @@ interface Project {
   title?: string;
   description?: string;
   tags?: string[];
+  github?: string;
+  live?: string;
 }
 
 const { data: projects } = await useAsyncData(

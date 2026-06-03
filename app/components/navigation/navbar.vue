@@ -146,7 +146,7 @@ const doSearch = async () => {
       })
       .filter((p) => p.matches)
       .sort((a, b) => b.score - a.score)
-      .map((p: ResultItem) => ({
+      .map((p: SearchResult) => ({
         title: p.title,
         description: p.description || "",
         path: `${localePrefix.value}${p.path || `/blog/${p.id}`}`,
@@ -505,7 +505,7 @@ const navLinkClass = (path: string) => {
             v-else-if="query && !searching"
             class="mt-4 text-center text-sm text-muted-foreground"
           >
-            No results found.
+            {{ t("navbar.search_no_results") }}
           </div>
 
           <div

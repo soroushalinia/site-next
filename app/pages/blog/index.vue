@@ -102,7 +102,9 @@ useSeoMeta({
           </time>
           <span class="inline-flex items-baseline gap-1.5 whitespace-nowrap">
             <Icon name="lucide:clock" class="size-4.5 self-center -mt-1" />
-            {{ t("blog_post.min_read", { n: getReadingTime(post.body) }) }}
+            {{
+              t("blog_post.min_read", { n: getReadingTime(post.body ?? {}) })
+            }}
           </span>
         </div>
 

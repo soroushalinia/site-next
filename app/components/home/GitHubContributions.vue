@@ -32,7 +32,7 @@ const { data, status } = useAsyncData<ContributionData>(
 
       const recent = raw.contributions.filter((c) => {
         const parts = c.date.split("-").map(Number);
-        const d = new Date(parts[0], parts[1] - 1, parts[2]);
+        const d = new Date(parts[0] ?? 0, (parts[1] ?? 1) - 1, parts[2] ?? 1);
         return d >= oneYearAgo && d <= now;
       });
 
@@ -77,7 +77,7 @@ const grid = computed(() => {
   const all = data.value.contributions.map((c) => {
     const parts = c.date.split("-").map(Number);
     return {
-      date: new Date(parts[0], parts[1] - 1, parts[2]),
+      date: new Date(parts[0] ?? 0, (parts[1] ?? 1) - 1, parts[2] ?? 1),
       count: c.count,
       level: Math.min(c.level, 4),
     };
@@ -85,10 +85,10 @@ const grid = computed(() => {
 
   all.sort((a, b) => a.date.getTime() - b.date.getTime());
 
-  const start = new Date(all[0].date);
+  const start = new Date(all[0]!.date);
   start.setDate(start.getDate() - start.getDay());
 
-  const end = new Date(all[all.length - 1].date);
+  const end = new Date(all[all.length - 1]!.date);
   if (end.getDay() < 6) {
     end.setDate(end.getDate() + (6 - end.getDay()));
   }
@@ -112,7 +112,7 @@ const grid = computed(() => {
       weekDays.push(level);
 
       if (cursor.getMonth() !== lastMonth) {
-        monthLabels.push({ label: months[cursor.getMonth()], col });
+        monthLabels.push({ label: months[cursor.getMonth()] ?? "", col });
         lastMonth = cursor.getMonth();
       }
 
@@ -143,7 +143,7 @@ const grid = computed(() => {
             :style="{
               width:
                 i < grid.monthLabels.length - 1
-                  ? `${(grid.monthLabels[i + 1].col - label.col) * 14 - 3}px`
+                  ? `${(grid.monthLabels[i + 1]!.col - label.col) * 14 - 3}px`
                   : `${(grid.weeks.length - label.col) * 14 - 3}px`,
             }"
           >

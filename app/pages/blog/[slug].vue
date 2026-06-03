@@ -14,7 +14,7 @@ const slug = route.params.slug as string;
 const blogPath = slug === "index" ? "/blog" : `/blog/${slug}`;
 
 function toPersianDigitsStr(s: string): string {
-  return s.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]);
+  return s.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)] ?? d);
 }
 
 function walkTreeAndConvertFootnotes(node: unknown): unknown {
@@ -47,9 +47,9 @@ const { data: post } = await useAsyncData(
       tags?: string[];
       body?: { value: unknown };
     }
-    const content = (await fetchLocalizedContent<BlogPost>("blog", {
+    const content = await fetchLocalizedContent<BlogPost>("blog", {
       path: blogPath,
-    })) as BlogPost | null;
+    });
 
     if (content && isFa.value && content.body?.value) {
       return {
@@ -87,7 +87,7 @@ function applyPersianFootnotes() {
         walker.currentNode.textContent =
           walker.currentNode.textContent!.replace(
             /\d/g,
-            (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)],
+            (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)] ?? d,
           );
       }
     });
@@ -114,7 +114,7 @@ function extractTocFromBody(
       const tag = item[0];
       const props = item[1];
       if (/^h[1-3]$/.test(tag) && props?.id) {
-        const hDepth = parseInt(tag[1]);
+        const hDepth = parseInt(tag[1]!);
         const children = item.slice(2);
         const text = extractTextFromMinimark(children);
         links.push({ id: props.id, depth: hDepth, text });

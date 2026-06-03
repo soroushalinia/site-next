@@ -10,7 +10,8 @@
         "contact": "ارتباط",
         "search": "جستجو",
         "search_placeholder": "جستجوی پست‌ها، پروژه‌ها و موارد دیگر...",
-        "search_hint": "برای جستجو Enter را بزنید"
+        "search_hint": "برای جستجو Enter را بزنید",
+        "search_no_results": "نتیجه‌ای یافت نشد."
     },
     "home_page": {
         "title": "خانه",
