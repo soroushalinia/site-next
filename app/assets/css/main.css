@@ -443,6 +443,8 @@ pre {
 .content-body pre {
   direction: ltr;
   text-align: left;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 /* Inline code stays LTR and is bidi-isolated so the surrounding RTL text and
@@ -460,6 +462,9 @@ pre {
 
 .content-body {
   text-align: justify;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .fa-footnotes nav span[dir="auto"] code {
