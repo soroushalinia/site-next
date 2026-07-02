@@ -467,6 +467,15 @@ pre {
   word-break: break-word;
 }
 
+.content-body h1,
+.content-body h2,
+.content-body h3,
+.content-body h4,
+.content-body h5,
+.content-body h6 {
+  text-align: start;
+}
+
 .fa-footnotes nav span[dir="auto"] code {
   direction: ltr;
   unicode-bidi: bidi-override;
