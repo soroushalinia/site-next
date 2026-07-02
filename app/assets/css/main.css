@@ -462,9 +462,9 @@ pre {
 
 .content-body {
   text-align: justify;
+  text-justify: inter-word;
   overflow-wrap: break-word;
   word-break: break-word;
-  hyphens: auto;
 }
 
 .fa-footnotes nav span[dir="auto"] code {
