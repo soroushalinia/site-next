@@ -1,9 +1,9 @@
 {
   "title": "Home",
-  "description": "Soroush Alinia — Software Engineer",
+  "description": "Soroush Alinia — Software Engineer / DevSecOps",
   "hero": {
     "greeting": "Soroush Alinia",
-    "subtitle": "Software Engineer",
+    "subtitle": "Software Engineer / DevSecOps",
     "description": "I build modern web applications with cutting-edge technologies. Passionate about clean code, great UX, and open source."
   },
   "about": {

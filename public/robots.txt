@@ -1,4 +1,7 @@
 User-Agent: *
 Allow: /
+Disallow: /_nuxt/
 
 Sitemap: https://soroushalinia.ir/sitemap.xml
+
+Feed: https://soroushalinia.ir/feed.xml

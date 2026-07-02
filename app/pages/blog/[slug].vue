@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { fetchLocalizedContent } from "../../composables/useFetchLocalized";
 import { useLocaleInfo } from "../../composables/useLocaleInfo";
 
 const { t } = useI18n();
@@ -88,10 +87,10 @@ const { data: post } = await useAsyncData(
       }
     }
 
-    const content = await fetchLocalizedContent<BlogPost>("blog", {
-      path: blogPath,
-      locale: locale.value,
-    });
+    const collectionName = `blog_${isFa.value ? "fa" : "en"}` as const;
+    const content = await queryCollection(collectionName)
+      .path(blogPath)
+      .first();
 
     if (content && isFa.value && content.body?.value) {
       return {
@@ -112,13 +111,38 @@ function extractTextFromMinimark(node: unknown): string {
   if (!node) return "";
   if (typeof node === "string") return node;
   if (Array.isArray(node)) {
-    const children =
-      node[1] && typeof node[1] === "object" && !Array.isArray(node[1])
-        ? node.slice(2)
-        : node;
-    return children.map(extractTextFromMinimark).join(" ");
+    const isElement =
+      node[1] && typeof node[1] === "object" && !Array.isArray(node[1]);
+    const children = isElement ? node.slice(2) : node;
+    return children.map(extractTextFromMinimark).join("");
   }
   return "";
+}
+
+interface TocChild {
+  type: "text" | "code";
+  text: string;
+}
+
+function extractTocChildren(node: unknown): TocChild[] {
+  if (!node) return [];
+  if (typeof node === "string") return [{ type: "text", text: node }];
+  if (Array.isArray(node)) {
+    const isElement =
+      node[1] && typeof node[1] === "object" && !Array.isArray(node[1]);
+    const tag = isElement && typeof node[0] === "string" ? node[0] : "";
+    const children = isElement ? node.slice(2) : node;
+    if (tag === "code" || tag === "inlineCode") {
+      const text = children
+        .map((c: unknown) =>
+          typeof c === "string" ? c : extractTextFromMinimark(c),
+        )
+        .join("");
+      return [{ type: "code", text }];
+    }
+    return children.flatMap(extractTocChildren);
+  }
+  return [];
 }
 
 function applyPersianFootnotes() {
@@ -151,9 +175,9 @@ const readingTime = computed(() => {
 function extractTocFromBody(
   node: unknown,
   depth = 0,
-): { id: string; depth: number; text: string }[] {
+): { id: string; depth: number; children: TocChild[] }[] {
   if (!Array.isArray(node)) return [];
-  const links: { id: string; depth: number; text: string }[] = [];
+  const links: { id: string; depth: number; children: TocChild[] }[] = [];
   for (const item of node) {
     if (typeof item !== "object" || !Array.isArray(item)) continue;
     if (typeof item[0] === "string" && item[1] && typeof item[1] === "object") {
@@ -162,8 +186,8 @@ function extractTocFromBody(
       if (/^h[1-3]$/.test(tag) && props?.id) {
         const hDepth = parseInt(tag[1]!);
         const children = item.slice(2);
-        const text = extractTextFromMinimark(children);
-        links.push({ id: props.id, depth: hDepth, text });
+        const tocChildren = extractTocChildren(children);
+        links.push({ id: props.id, depth: hDepth, children: tocChildren });
       }
       links.push(...extractTocFromBody(item.slice(2), depth + 1));
     } else {
@@ -177,7 +201,10 @@ const tocLinks = computed(() => {
   if (!body) return [];
   return extractTocFromBody(body).map((link) =>
     link.id === "footnote-label"
-      ? { ...link, text: t("blog_post.footnotes") }
+      ? {
+          ...link,
+          children: [{ type: "text", text: t("blog_post.footnotes") }],
+        }
       : link,
   );
 });
@@ -379,6 +406,8 @@ useHead({
               class="text-muted-foreground hover:text-foreground transition-colors"
               :class="{
                 'font-semibold text-foreground': link.depth <= 1,
+                'pr-2': isFa && link.depth === 2,
+                'pl-2': !isFa && link.depth === 2,
                 'pr-4': isFa && link.depth === 3,
                 'pl-4': !isFa && link.depth === 3,
               }"
@@ -386,7 +415,16 @@ useHead({
               <span class="text-primary/60 font-medium tabular-nums ml-1.5"
                 >{{ link.number }}.</span
               >
-              {{ link.text }}
+              <span :dir="isFa ? 'auto' : undefined" class="inline">
+                <template v-for="(child, idx) in link.children" :key="idx">
+                  <code
+                    v-if="child.type === 'code'"
+                    class="before:content-none after:content-none text-[0.8125rem] font-mono bg-muted/60 px-1 rounded-sm"
+                    >{{ child.text }}</code
+                  >
+                  <span v-else>{{ child.text }}</span>
+                </template>
+              </span>
             </a>
           </li>
         </ul>

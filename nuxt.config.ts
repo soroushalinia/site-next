@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       failOnError: false,
-      routes: ["/", "/fa", "/sitemap.xml"],
+      routes: ["/", "/fa", "/sitemap.xml", "/feed.xml"],
     },
   },
   hooks: {
@@ -42,6 +42,7 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxtjs/color-mode",
     "@nuxt/content",
+    "@nuxt/image",
     "@nuxtjs/i18n",
     "@nuxt/ui",
   ],

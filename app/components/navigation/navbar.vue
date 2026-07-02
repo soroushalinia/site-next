@@ -194,10 +194,22 @@ const onQueryInput = () => {
   debounceTimer = setTimeout(doSearch, 300);
 };
 
+const openSearch = () => {
+  isSearchOpen.value = true;
+};
+
 const closeSearch = () => {
   isSearchOpen.value = false;
   query.value = "";
   results.value = [];
+};
+
+const openSidebar = () => {
+  isSidebarOpen.value = true;
+};
+
+const closeSidebar = () => {
+  isSidebarOpen.value = false;
 };
 
 const toggleTheme = () => {
@@ -308,7 +320,7 @@ const navLinkClass = (path: string) => {
               color="neutral"
               square
               aria-label="Search"
-              @click="isSearchOpen = true"
+              @click="openSearch"
             >
               <UIcon
                 name="i-heroicons-magnifying-glass-20-solid"
@@ -357,7 +369,7 @@ const navLinkClass = (path: string) => {
               color="neutral"
               square
               aria-label="Open menu"
-              @click="isSidebarOpen = true"
+              @click="openSidebar"
             >
               <UIcon name="i-heroicons-bars-3-20-solid" class="size-5" />
             </UButton>
@@ -381,7 +393,7 @@ const navLinkClass = (path: string) => {
               color="neutral"
               square
               aria-label="Close menu"
-              @click="isSidebarOpen = false"
+              @click="closeSidebar"
             >
               <UIcon name="i-heroicons-x-mark-20-solid" class="size-5" />
             </UButton>
@@ -398,7 +410,7 @@ const navLinkClass = (path: string) => {
                   ? 'bg-muted text-foreground'
                   : 'text-muted-foreground hover:bg-muted/40 hover:text-foreground',
               ]"
-              @click="isSidebarOpen = false"
+              @click="closeSidebar"
             >
               {{ item.label }}
             </NuxtLink>

@@ -452,6 +452,21 @@ pre {
   unicode-bidi: isolate;
 }
 
+/* Tables in Persian posts should remain LTR so code/content columns align. */
+.content-fa table {
+  direction: ltr;
+  text-align: left;
+}
+
+.content-body {
+  text-align: justify;
+}
+
+.fa-footnotes nav span[dir="auto"] code {
+  direction: ltr;
+  unicode-bidi: bidi-override;
+}
+
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -472,5 +487,112 @@ pre {
   animation-duration: 0.6s;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
+}
+
+@media print {
+  @page {
+    margin: 2cm;
+  }
+
+  * {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  :root, .dark {
+    --ui-text-highlighted: #111827 !important;
+    --ui-text: #374151 !important;
+    --ui-text-muted: #6b7280 !important;
+    --ui-text-dimmed: #9ca3af !important;
+    --ui-bg: #ffffff !important;
+    --ui-bg-muted: #f3f4f6 !important;
+    --ui-bg-elevated: #f9fafb !important;
+    --ui-bg-accented: #e5e7eb !important;
+    --ui-border: #d1d5db !important;
+    --ui-border-muted: #d1d5db !important;
+    --ui-border-accented: #9ca3af !important;
+  }
+
+  body {
+    --background: #ffffff !important;
+    --foreground: #111827 !important;
+    --muted: #f3f4f6 !important;
+    --muted-foreground: #6b7280 !important;
+    --primary: #2563eb !important;
+    --primary-foreground: #ffffff !important;
+    --accent: #f3f4f6 !important;
+    --accent-foreground: #374151 !important;
+    --card: #ffffff !important;
+    --card-foreground: #111827 !important;
+    --border: #d1d5db !important;
+    --secondary: #e5e7eb !important;
+    --secondary-foreground: #374151 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  nav, footer, button, .btn, .reveal, [class*="animate-"] {
+    display: none !important;
+  }
+
+  [class*="rounded-sm"][class*="text-accent-foreground"] {
+    background: #e5e7eb !important;
+    color: #111827 !important;
+    border: 1px solid #d1d5db !important;
+  }
+
+  .content-body > h2 [class*="leading"],
+  .content-body > h3 [class*="leading"] {
+    display: none !important;
+  }
+
+  body .content-body h2 a,
+  body .content-body h3 a,
+  body .content-body h4 a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  body .content-body a {
+    color: #2563eb !important;
+    text-decoration: underline !important;
+  }
+
+  pre, pre > code {
+    background: #1e1e2e !important;
+    color: #cdd6f4 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  pre * {
+    background: transparent !important;
+  }
+
+  table {
+    background: #ffffff !important;
+  }
+
+  thead {
+    background: #f3f4f6 !important;
+  }
+
+  th, td {
+    border-color: #d1d5db !important;
+  }
+
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  pre, table, img {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4 {
+    page-break-after: avoid;
+  }
 }
 

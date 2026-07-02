@@ -56,6 +56,12 @@ useHead({
       href: "https://api.web3forms.com",
       crossorigin: "",
     },
+    {
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "Soroush Alinia",
+      href: `${siteUrl}/feed.xml`,
+    },
   ],
   script: [
     {

@@ -108,7 +108,7 @@ useSeoMeta({
         :style="{ animationDelay: '300ms' }"
       >
         <a
-          href="/cv.pdf"
+          href="/CV-SoroushAlinia.pdf"
           download
           class="btn btn--primary w-full sm:w-auto min-w-36 justify-center"
         >
