@@ -179,9 +179,29 @@ Let's also investigate the output:
 
 You'll notice that capabilities such as `CAP_SYS_MODULE`, `CAP_SYS_BOOT`, `CAP_SYS_ADMIN`, and `CAP_SYS_TIME` are absent. This is why a root process inside a default Docker container cannot perform many operations that host root can.
 
+## Dropping Capabilities with `--cap-drop`
+
+If even Docker's default set of capabilities is more than your application needs, you can drop more. The `--cap-drop` flag lets you remove individual capabilities or all of them at once.
+
+```bash
+docker run --cap-drop ALL nginx
+```
+
+In Docker Compose:
+
+```yaml
+services:
+  nginx:
+    image: nginx:latest
+    cap_drop:
+      - ALL
+```
+
+This ensures the container starts with the minimum privileges possible.
+
 ## Adding Capabilities with `--cap-add`
 
-Suppose you want to allow a certain capability now, like CAP_NET_BIND_SERVER for Nginx to allow serving ports 80 or 443.
+Suppose you want to allow a certain capability now, like `CAP_NET_BIND_SERVICE` for Nginx to allow serving ports 80 or 443.
 
 Instead of allowing broad privileges, you can allow that certain capability:
 
@@ -190,6 +210,18 @@ docker run \
 --cap-drop ALL \
 --cap-add NET_BIND_SERVICE \
 nginx
+```
+
+Or in Docker Compose:
+
+```yaml
+services:
+  nginx:
+    image: nginx:latest
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
 ```
 
 This way is much safer than allowing all capabilities. 
@@ -226,78 +258,6 @@ With this capability you can:
 
 Now this is fine if you're running a VPN server, a CNI plugin, or something like that. But for a typical web app that just serves HTTP? You don't need it. Granting `CAP_NET_ADMIN` to an app like that is just giving the attacker more options if they get in.
 
-## Example Usage
-
-Say we're deploying a Next.js app to production. Most Next.js apps don't expose ports 80 or 443 directly. They listen on something like 3000 and a reverse proxy (Nginx, Traefik, HAProxy) handles the rest. In that case, the app doesn't need any Linux capabilities at all.
-
-**Docker Compose:**
-
-```yaml
-services:
-  nextjs:
-    image: my-nextjs-app:latest
-    cap_drop:
-      - ALL
-```
-
-**Kubernetes:**
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nextjs
-spec:
-  template:
-    spec:
-      containers:
-        - name: nextjs
-          image: my-nextjs-app:latest
-          securityContext:
-            capabilities:
-              drop:
-                - ALL
-```
-
-Now imagine the attacker exploits that Next.js vulnerability we talked about earlier and gets RCE inside the container. The exploit still works, but the compromised process can't do privileged stuff. No raw sockets, no network config, no kernel modules, no mounting filesystems. Because those capabilities were never given.
-
-But what if the app listens on port 80? Some setups, like an Nginx container running standalone Docker, need to bind to ports below 1024. That needs `CAP_NET_BIND_SERVICE`. So grant only that one.
-
-**Docker Compose:**
-
-```yaml
-services:
-  nginx:
-    image: nginx:latest
-    cap_drop:
-      - ALL
-    cap_add:
-      - NET_BIND_SERVICE
-```
-
-**Kubernetes:**
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx
-spec:
-  template:
-    spec:
-      containers:
-        - name: nginx
-          image: nginx:latest
-          securityContext:
-            capabilities:
-              drop:
-                - ALL
-              add:
-                - NET_BIND_SERVICE
-```
-
-Whether you're running Next.js, Nginx, or anything else, the idea is the same. Grant only what the app actually needs. If it needs one capability, grant one capability. Nothing more.
-
 # Privileged Containers
 
 `--privileged` is not a capability. It's a flag that says "give me everything", almost every Linux capability, host device access, relaxed cgroup restrictions, disabled safety mechanisms. People use it as a troubleshooting shortcut: something doesn't work, they slap `--privileged` and move on. Instead, figure out what's actually needed, a specific capability? Access to `/dev/net/tun`? Granting one permission is always better than granting everything. Reserve `--privileged` for low-level infrastructure like container runtimes or debugging tools, not your web app, API, or background workers.
@@ -331,17 +291,8 @@ securityContext:
 
 With this, any attempt to modify the container's files fails. Even if the process has file permissions to write. It becomes an immutable environment.
 
-## Why Would You Want This?
+This prevents an entire class of post-exploitation techniques that rely on modifying the filesystem. Without write access, an attacker cannot replace your application binary with a backdoored version, tamper with configuration files to disable security controls, or install persistence mechanisms like cron jobs, systemd services, or startup scripts. They cannot download malware to disk, drop a web shell into the document root, or overwrite shared libraries for LD_PRELOAD-style hijacking. Even with full code execution, the attacker cannot permanently alter the container's state. Any changes are lost when the container restarts.
 
-When an attacker gets code execution, one of the first things they try is persistence. They might:
-- Replace the app with a modified version.
-- Install a web shell.
-- Download malware.
-- Modify startup scripts.
-- Replace system tools with trojanized ones.
-- Leave backdoors.
-
-With a writable filesystem, all of these are possible (if permissions allow). With a read-only root filesystem, they fail. The attacker can still run commands in the compromised process, but they can't permanently change the container.
 
 ## Temporary Writable Storage with `tmpfs`
 
@@ -393,26 +344,10 @@ Everything else stays immutable. This reduces the attack surface significantly.
 
 ## What a Read-Only Filesystem Does NOT Prevent
 
-Now, it's important to understand what this does and doesn't do. It doesn't stop the exploit. It doesn't stop code execution. It prevents some post-exploitation techniques.
+A read-only root filesystem only blocks writes to disk. It does not prevent the initial exploit, stop code execution, or restrict what a process can do in memory. An attacker with RCE can still exfiltrate data, spawn reverse shells, attack other services, or abuse kernel interfaces, as long as those operations don't require writing to disk.
 
-For example, the attacker can no longer:
-- Replace binaries.
-- Download malware into the filesystem.
-- Modify config files.
-- Install cron jobs or startup scripts.
-- Leave persistent backdoors.
+For example, [Sysdig has documented](https://www.sysdig.com/blog/containers-read-only-fileless-malware) how attackers use memory-backed filesystems like `/dev/shm` to download and execute malware entirely in RAM, leaving no traces on disk. This technique, called fileless malware, completely bypasses read-only filesystem restrictions. The malware runs, does its damage, and disappears when the container stops, no files ever touched.
 
-But a read-only filesystem does not mitigate everything. Attackers can still use memory-backed filesystems like `/dev/shm` to download and execute malware entirely in memory, leaving no traces on disk. Thanks to `/dev/shm`, we are able to make "files" backed by memory instead of disk space that we can use to download additional malware and further compromise the system. This is called fileless malware, and it completely bypasses read-only filesystem restrictions. If you are running vulnerable containers as identified by one of the many vulnerability scanners now available, please patch them as soon as possible. [Sysdig has documented this in detail](https://www.sysdig.com/blog/containers-read-only-fileless-malware), showing how attackers abuse `/dev/shm` to run malware even with read-only root filesystems.
-
-This is why read-only is just one layer. You combine it with dropped capabilities, seccomp, and no-new-privileges. That's defense in depth.
-
-## Read-Only Containers and Immutable Infrastructure
-
-This idea fits with something called immutable infrastructure. In an immutable system, you never modify running workloads in place. Need to update the app? Build a new image, deploy a new container. Don't SSH in and edit files.
-
-If a container gets compromised, you don't try to clean it. You destroy it and spin up a fresh one from a trusted image.
-
-This makes deployments predictable and removes a whole category of configuration drift problems. A read-only filesystem enforces this by making sure the running container stays identical to the image.
 
 # Preventing Privilege Escalation with `no-new-privileges`
 
