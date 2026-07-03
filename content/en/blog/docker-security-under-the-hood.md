@@ -1,3 +1,10 @@
+---
+title: "Docker Security Under the Hood: Runtime Security Model Explained"
+description: "A deep dive into Docker's security model: Linux capabilities, seccomp, AppArmor, user namespaces, and how defense in depth protects containers in production."
+date: 2026-07-02
+tags: [Docker, Security, Linux, Containers]
+---
+
 # Introduction
 
 Container security has improved significantly over the past decade, yet the advice surrounding it has not.
@@ -293,18 +300,7 @@ Whether you're running Next.js, Nginx, or anything else, the idea is the same. G
 
 # Privileged Containers
 
-You might have noticed we haven't talked about `--privileged` yet. That's because it's more of an anti-pattern than a best practice.
-
-Running with `--privileged` is not a capability. It's a flag that says "give me everything." Docker grants almost every Linux capability, access to host devices, relaxes device cgroup restrictions, and disables several default safety mechanisms. The container basically behaves like a regular process on the host.
-
-The problem is people use it as a troubleshooting shortcut. Something doesn't work, they slap `--privileged` on it, and the problem goes away. But now you've given the container way more permissions than it needs.
-
-Instead, figure out what's actually needed:
-- Does it need `CAP_NET_ADMIN`?
-- Does it need access to `/dev/net/tun`?
-- Does it need one specific capability?
-
-Granting one permission is always better than granting everything. `--privileged` should be reserved for low-level infrastructure stuff like container runtimes, debugging tools, or hardware management. Not your web app, not your API, not your background workers. If your production app needs `--privileged`, you should probably investigate why.
+`--privileged` is not a capability. It's a flag that says "give me everything", almost every Linux capability, host device access, relaxed cgroup restrictions, disabled safety mechanisms. People use it as a troubleshooting shortcut: something doesn't work, they slap `--privileged` and move on. Instead, figure out what's actually needed, a specific capability? Access to `/dev/net/tun`? Granting one permission is always better than granting everything. Reserve `--privileged` for low-level infrastructure like container runtimes or debugging tools, not your web app, API, or background workers.
 
 # Read-Only Filesystems
 
@@ -484,7 +480,7 @@ Even after dropping capabilities and preventing privilege escalation, a compromi
 
 Everything a userspace program does with the kernel goes through a syscall. Reading a file, opening a socket, creating a process, allocating memory. All of it.
 
-Seccomp lets you control which syscalls a process can make. Modern Linux has hundreds of syscalls. `mount()`, `bpf()`, `ptrace()` — powerful kernel interfaces that most apps never need.
+Seccomp lets you control which syscalls a process can make. Modern Linux has hundreds of syscalls. `mount()`, `bpf()`, `ptrace()`, powerful kernel interfaces that most apps never need.
 
 ## Docker's Default Seccomp Profile
 
@@ -496,7 +492,7 @@ In high-security environments, you should treat the default profile as a startin
 
 ## How to Actually Configure Seccomp
 
-Now this is where Iman was right — just saying "enable seccomp" without telling people how is not helpful. So here's how you do it.
+Now this is where Iman was right, just saying "enable seccomp" without telling people how is not helpful. So here's how you do it.
 
 Docker lets you apply a custom seccomp profile with `--security-opt`:
 
@@ -550,10 +546,10 @@ securityContext:
 ## Dangerous System Calls
 
 Some syscalls have been involved in a lot of vulnerabilities over the years:
-- `ptrace()` — debugging other processes.
-- `mount()` — manipulating filesystems.
-- `bpf()` — interacting with eBPF.
-- `userfaultfd()` — involved in multiple privilege escalation bugs.
+- `ptrace()`: debugging other processes.
+- `mount()`: manipulating filesystems.
+- `bpf()`: interacting with eBPF.
+- `userfaultfd()`: involved in multiple privilege escalation bugs.
 - Certain namespace-related syscalls.
 
 These are powerful and unnecessary for most web apps. Blocking them removes a whole class of post-exploitation techniques.
@@ -605,7 +601,7 @@ None of these alone is enough. Together, they create defense in depth where an a
 
 Rootless Docker runs the daemon and containers without root privileges on the host. It uses user namespaces (the same thing we discussed earlier) but goes further by running the Docker daemon itself as an unprivileged user.
 
-The difference is scope. With standard user namespace remapping, only container processes are remapped. The daemon still runs as root. With rootless mode, the whole stack — daemon, containerd, runc — runs without host root.
+The difference is scope. With standard user namespace remapping, only container processes are remapped. The daemon still runs as root. With rootless mode, the whole stack (daemon, containerd, runc) runs without host root.
 
 Rootless Docker has limitations. Can't bind to ports below 1024 (though tools like `authbind` can work around it), limited storage driver support, and doesn't work with all network configs.
 
