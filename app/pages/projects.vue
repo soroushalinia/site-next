@@ -19,7 +19,13 @@ interface Project {
 
 const { data: projects } = await useAsyncData(
   "projects-" + prefix.value,
-  () => fetchLocalizedContent<Project[]>("projects", { locale: locale.value }),
+  () =>
+    fetchLocalizedContent<Project[]>("projects", { locale: locale.value }).then(
+      (items) =>
+        items?.sort((a, b) =>
+          (a.title ?? "").localeCompare(b.title ?? ""),
+        ) ?? null,
+    ),
   { watch: [prefix] },
 );
 

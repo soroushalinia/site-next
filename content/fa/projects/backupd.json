@@ -1,0 +1,7 @@
+{
+  "title": "backupd",
+  "description": "یک سرویس بکاپ متن‌باز و سازگار با S3. پلن‌های بکاپ را به‌صورت اعلامی در یک فایل YAML تعریف کنید؛ منابع، مقصد، رمزنگاری، سیاست نگهداری، تگ‌ها و هوک‌ها را مشخص کنید و بقیه را به backupd بسپارید. با پشتیبانی از اسنپ‌شات‌های افزایشی، دیتابیس‌ها، ولوم‌های داکر، PVC کوبرنتیز و زمان‌بند داخلی.",
+  "tags": ["Golang", "S3", "Backup", "YAML"],
+  "github": "https://github.com/soroushalinia/backupd",
+  "live": "https://soroushalinia.github.io/backupd/"
+}

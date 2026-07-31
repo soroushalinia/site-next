@@ -1,0 +1,7 @@
+{
+  "title": "backupd",
+  "description": "A declarative S3-compatible backup daemon. Define your backup plans in a single YAML file with sources, destination, encryption, retention, tags, and hooks, and let backupd handle the rest. Supports incremental snapshots, databases, Docker volumes, Kubernetes PVCs, and a built-in scheduler.",
+  "tags": ["Golang", "S3", "Backup", "YAML"],
+  "github": "https://github.com/soroushalinia/backupd",
+  "live": "https://soroushalinia.github.io/backupd/"
+}
