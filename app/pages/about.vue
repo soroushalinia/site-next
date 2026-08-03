@@ -23,27 +23,48 @@ const experience = computed(
       title: string;
       company: string;
       url?: string;
-      description: string;
+      description: string[];
     }[],
 );
 
 const skillIcons: Record<string, string> = {
   Python: "i-simple-icons-python",
   Golang: "i-simple-icons-go",
+  Go: "i-simple-icons-go",
   JavaScript: "i-simple-icons-javascript",
   Bash: "i-lucide-terminal",
   TypeScript: "i-simple-icons-typescript",
   Linux: "i-simple-icons-linux",
+  "Linux Administration": "i-simple-icons-linux",
+  Systemd: "i-lucide-terminal",
+  "Bash Scripting": "i-lucide-terminal",
+  "Network Troubleshooting": "i-lucide-network",
   Docker: "i-simple-icons-docker",
   Kubernetes: "i-simple-icons-kubernetes",
+  Helm: "i-lucide-compass",
+  RBAC: "i-lucide-shield",
+  Ingress: "i-lucide-route",
+  "MinIO (S3)": "i-simple-icons-minio",
+  Ceph: "i-simple-icons-ceph",
+  SeaweedFS: "i-lucide-database",
   Terraform: "i-simple-icons-terraform",
   Ansible: "i-simple-icons-ansible",
   Nginx: "i-simple-icons-nginx",
+  "Reverse Proxies": "i-lucide-forward",
+  DNS: "i-lucide-globe",
+  "TCP/IP": "i-lucide-network",
+  "SSL/TLS": "i-lucide-lock",
   Traefik: "i-simple-icons-traefikproxy",
   "GitLab CI/CD": "i-simple-icons-gitlab",
+  "GitHub Actions": "i-simple-icons-githubactions",
+  Gitea: "i-simple-icons-gitea",
+  "Woodpecker CI": "i-lucide-rocket",
+  Git: "i-simple-icons-git",
   ArgoCD: "i-simple-icons-argo",
   Prometheus: "i-simple-icons-prometheus",
   Grafana: "i-simple-icons-grafana",
+  Loki: "i-lucide-activity",
+  Alertmanager: "i-lucide-bell",
   "ELK Stack": "i-simple-icons-elasticsearch",
   RabbitMQ: "i-simple-icons-rabbitmq",
   Kafka: "i-simple-icons-apachekafka",
@@ -153,9 +174,14 @@ useSeoMeta({
                   item.company
                 }}</span>
               </div>
-              <p class="text-sm text-muted-foreground leading-relaxed">
-                {{ item.description }}
-              </p>
+              <ul
+                class="mt-2 flex flex-col gap-1.5 list-disc ps-5 text-sm text-muted-foreground leading-relaxed"
+                :dir="isFa ? 'rtl' : 'ltr'"
+              >
+                <li v-for="(point, j) in item.description" :key="j">
+                  {{ point }}
+                </li>
+              </ul>
             </div>
           </div>
         </div>

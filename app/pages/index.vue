@@ -108,7 +108,7 @@ useSeoMeta({
         :style="{ animationDelay: '300ms' }"
       >
         <a
-          href="/CV-SoroushAlinia.pdf"
+          href="/Soroush_Alinia_Resume.pdf"
           download
           class="btn btn--primary w-full sm:w-auto min-w-36 justify-center"
         >
@@ -287,7 +287,7 @@ useSeoMeta({
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
         <a
-          href="https://github.com/soroushalinia/infra-template"
+          href="https://github.com/soroushalinia/backupd"
           target="_blank"
           rel="noopener noreferrer"
           dir="ltr"
@@ -298,29 +298,30 @@ useSeoMeta({
             <UIcon name="i-lucide-book" class="size-4 text-primary shrink-0" />
             <span
               class="font-medium truncate group-hover:text-primary transition-colors"
-              >infra-template</span
+              >backupd</span
             >
           </div>
           <p class="text-xs text-muted-foreground line-clamp-2 flex-1">
-            How to guide to set up a basic infrastructure for common self-hosted
-            services.
+            Declarative S3-compatible backup daemon: incremental delta backups,
+            AES-256-GCM encryption, retention policies, cron scheduling, and
+            hooks.
           </p>
           <div
             class="flex items-center gap-3 mt-3 pt-3 border-t border-border text-xs text-muted-foreground"
           >
             <span class="flex items-center gap-1">
               <UIcon name="i-lucide-star" class="size-3.5" />
-              3
+              28
             </span>
             <span class="flex items-center gap-1">
               <UIcon name="i-lucide-git-fork" class="size-3.5" />
-              1
+              0
             </span>
-            <span>Shell</span>
+            <span>Go</span>
           </div>
         </a>
         <a
-          href="https://github.com/NamiraNet/namira-web"
+          href="https://github.com/soroushalinia/shepherd"
           target="_blank"
           rel="noopener noreferrer"
           dir="ltr"
@@ -331,25 +332,25 @@ useSeoMeta({
             <UIcon name="i-lucide-book" class="size-4 text-primary shrink-0" />
             <span
               class="font-medium truncate group-hover:text-primary transition-colors"
-              >namira-web</span
+              >shepherd</span
             >
           </div>
           <p class="text-xs text-muted-foreground line-clamp-2 flex-1">
-            Dashboard for Namira, an open-source anti-censorship connectivity
-            project.
+            A Linux kernel module with a single opinionated sheep living in
+            /proc/sheep.
           </p>
           <div
             class="flex items-center gap-3 mt-3 pt-3 border-t border-border text-xs text-muted-foreground"
           >
             <span class="flex items-center gap-1">
               <UIcon name="i-lucide-star" class="size-3.5" />
-              26
+              9
             </span>
             <span class="flex items-center gap-1">
               <UIcon name="i-lucide-git-fork" class="size-3.5" />
-              6
+              0
             </span>
-            <span>Svelte</span>
+            <span>C</span>
           </div>
         </a>
       </div>

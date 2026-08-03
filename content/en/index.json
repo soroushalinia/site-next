@@ -13,42 +13,84 @@
         "title": "Open Source Contributor",
         "company": "Parch Linux",
         "url": "https://parchlinux.com",
-        "description": "Contributing to an open-source Linux distribution by maintaining desktop environment ISO releases and supporting documentation and the community."
+        "description": [
+          "Contributing to Linux distribution build automation, packaging pipeline workflows, and release infrastructure.",
+          "Optimized custom ISO generation workflows and cloud-init provisioning scripts."
+        ]
       },
       {
         "period": "Dec 2024 - Present",
-        "title": "Frontend / DevOps Developer",
-        "company": "Benobe (Sanandaj, Kurdistan)",
+        "title": "DevOps Engineer",
+        "company": "Benobe (Remote)",
         "url": "https://benobe.ir",
-        "description": "Designing and building modern, responsive web applications with Next.js and React, with a strong emphasis on performance and SEO. Owning the full deployment pipeline, from containerization and self-hosted CI/CD to managing staging and production environments."
+        "description": [
+          "Operate and maintain production microservices infrastructure serving 150K+ active users across healthcare providers.",
+          "Migrated a full production stack from on-premise, pipeline-less Docker to Kubernetes during a ground-up rewrite, architecting a 4-node cluster (staging + production) running 10+ services including frontend, backend/admin panel, payment service, database, and Redis.",
+          "Designed CI/CD pipelines from scratch (Gitea + Woodpecker CI), enabling several zero-downtime production deployments per day with no service interruption.",
+          "Implemented centralized monitoring using Prometheus, Grafana, Loki, and Alertmanager, cutting incident detection to near-instant and worst-case fix-to-redeploy turnaround to under 30 minutes.",
+          "Automated server provisioning using Ansible and modular Bash scripting, managing RBAC policies, Ingress, and secrets across the cluster."
+        ]
       },
       {
         "period": "Sep 2023 - Dec 2024",
-        "title": "Freelancer",
-        "company": "Self-employed",
-        "description": "Delivered a range of client projects focused on backend development with Django and FastAPI, applying solid architecture and system design principles."
+        "title": "Backend & DevOps Engineer",
+        "company": "Freelance",
+        "description": [
+          "Engineered and deployed backend services using FastAPI, Django, Docker, and PostgreSQL with Redis caching layers, building automated CI/CD pipelines that eliminated manual deployment steps for client projects.",
+          "Administered and hardened Linux production servers, writing modular Bash scripts for routine maintenance and security."
+        ]
       }
     ],
     "skills": [
       {
-        "category": "Languages",
-        "items": ["Python", "Golang", "JavaScript", "TypeScript", "Bash"],
+        "category": "Languages & Databases",
+        "items": ["Python", "Golang", "JavaScript", "TypeScript", "Bash", "PostgreSQL", "MySQL", "MongoDB"],
         "icon": "i-lucide-code-2"
       },
       {
-        "category": "DevOps & Tools",
-        "items": ["Linux", "Docker", "Kubernetes", "Terraform", "Ansible", "Nginx", "Traefik", "GitLab CI/CD", "ArgoCD", "Prometheus", "Grafana", "ELK Stack", "RabbitMQ", "Kafka", "NATS", "Nexus"],
+        "category": "Linux & Systems",
+        "items": ["Linux", "Linux Administration", "Systemd", "Bash Scripting", "Network Troubleshooting"],
+        "icon": "i-lucide-terminal"
+      },
+      {
+        "category": "Containers & Orchestration",
+        "items": ["Kubernetes", "Docker", "Helm", "RBAC", "Ingress"],
+        "icon": "i-lucide-boxes"
+      },
+      {
+        "category": "Storage & Caching",
+        "items": ["MinIO (S3)", "Ceph", "SeaweedFS", "Redis"],
+        "icon": "i-lucide-database"
+      },
+      {
+        "category": "Infrastructure as Code",
+        "items": ["Terraform", "Ansible"],
         "icon": "i-lucide-cloud"
       },
       {
-        "category": "Databases",
-        "items": ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
-        "icon": "i-lucide-database"
+        "category": "CI/CD & GitOps",
+        "items": ["GitLab CI/CD", "GitHub Actions", "Gitea", "Woodpecker CI", "Git", "ArgoCD", "Nexus"],
+        "icon": "i-lucide-git-branch"
+      },
+      {
+        "category": "Monitoring & Logging",
+        "items": ["Prometheus", "Grafana", "Loki", "Alertmanager", "ELK Stack"],
+        "icon": "i-lucide-activity"
+      },
+      {
+        "category": "Networking & Web",
+        "items": ["Nginx", "Traefik", "Reverse Proxies", "DNS", "TCP/IP", "SSL/TLS"],
+        "icon": "i-lucide-globe"
       },
       {
         "category": "Frameworks",
         "items": ["FastAPI", "Django", "Gin", "Gorilla Mux", "Nuxt", "Vue", "Svelte", "Next.js", "React"],
-        "icon": "i-lucide-globe"
+        "icon": "i-lucide-layers"
+      },
+      {
+        "category": "Message Queues",
+        "items": ["RabbitMQ", "Kafka", "NATS"],
+        "icon": "i-lucide-radio"
       }
     ],
     "certificates": [

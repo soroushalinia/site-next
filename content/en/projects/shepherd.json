@@ -1,0 +1,6 @@
+{
+  "title": "Shepherd",
+  "description": "A Linux kernel module that places a single opinionated sheep inside /proc/sheep. Feed it, pet it, scare it, and discover a few hidden surprises. It serves no purpose beyond reminding you that not every kernel module has to be serious. You're the shepherd. Not the sheep.",
+  "tags": ["C", "Linux Kernel", "procfs"],
+  "github": "https://github.com/soroushalinia/shepherd"
+}

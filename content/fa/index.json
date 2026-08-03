@@ -13,42 +13,84 @@
         "title": "مشارکت‌کننده متن‌باز",
         "company": "پارچ‌لینوکس (ParchLinux)",
         "url": "https://parchlinux.com",
-        "description": "مشارکت در توسعه‌ی یک توزیع لینوکس متن‌باز با نگهداری نسخه‌های ISO و پشتیبانی از مستندات و انجمن کاربران."
+        "description": [
+          "مشارکت در خودکارسازی ساخت توزیع لینوکس، وُرک‌فلوهای پایپلاین بسته‌بندی و زیرساخت انتشار.",
+          "بهینه‌سازی وُرک‌فلوهای تولید ISO سفارشی و اسکریپت‌های پروویژن cloud-init."
+        ]
       },
       {
         "period": "آذر ۱۴۰۳ - اکنون",
-        "title": "توسعه‌دهنده فرانت‌اند / دوآپس",
-        "company": "ایده‌پرداز به‌نوبه (سنندج، کردستان)",
+        "title": "مهندس دواپس",
+        "company": "به‌نوبه (دورکاری)",
         "url": "https://benobe.ir",
-        "description": "طراحی و توسعه‌ی وب‌اپلیکیشن‌های مدرن و واکنش‌گرا با Next.js و React، با تمرکز بر کارایی و سئو. مدیریت کامل فرایند استقرار، از کانتینریزه‌سازی و CI/CD خودمیزبان تا مدیریت محیط‌های آزمایشی و تولید."
+        "description": [
+          "اجرا و نگهداری زیرساخت میکروسرویس‌های تولیدی با بیش از ۱۵۰ هزار کاربر فعال در حوزه ارائه‌دهندگان سلامت.",
+          "مهاجرت کامل استک تولیدی از داکر on-premise بدون پایپلاین به Kubernetes در یک بازنویسی از پایه، معماری کلاستر ۴ گره‌ای (staging + production) با ۱۰+ سرویس شامل فرانت‌اند، بک‌اند/پنل مدیریت، سرویس پرداخت، دیتابیس و Redis.",
+          "طراحی پایپلاین‌های CI/CD از صفر (Gitea + Woodpecker CI) که چندین استقرار تولید بدون وقفه در روز را بدون قطع سرویس ممکن کرد.",
+          "پیاده‌سازی مانیتورینگ متمرکز با Prometheus، Grafana، Loki و Alertmanager که زمان تشخیص حادثه را به نزدیک صفر و بدترین حالت رفع‌و‌استقرار مجدد را به زیر ۳۰ دقیقه رساند.",
+          "خودکارسازی پروویژن سرورها با Ansible و اسکریپت‌های Bash ماژولار، شامل مدیریت سیاست‌های RBAC، Ingress و اسرار (secrets) در سراسر کلاستر."
+        ]
       },
       {
         "period": "شهریور ۱۴۰۲ - آذر ۱۴۰۳",
-        "title": "فریلنسر",
-        "company": "مستقل",
-        "description": "انجام مجموعه‌ای از پروژه‌های مشتری با تمرکز بر توسعه‌ی بک‌اند با Django و FastAPI و به‌کارگیری اصول معماری و طراحی سیستم."
+        "title": "مهندس بک‌اند و دواپس",
+        "company": "فریلنسر",
+        "description": [
+          "طراحی و استقرار سرویس‌های بک‌اند با FastAPI، Django، Docker و PostgreSQL به‌همراه لایه کش Redis و ساخت پایپلاین‌های CI/CD خودکار که مراحل استقرار دستی را برای پروژه‌های مشتریان حذف کرد.",
+          "مدیریت و سخت‌سازی سرورهای لینوکسی تولید و نوشتن اسکریپت‌های Bash ماژولار برای نگهداری و امنیت روزمره."
+        ]
       }
     ],
     "skills": [
       {
-        "category": "زبان‌ها",
-        "items": ["Python", "Golang", "JavaScript", "TypeScript", "Bash"],
+        "category": "زبان‌ها و پایگاه‌داده",
+        "items": ["Python", "Golang", "JavaScript", "TypeScript", "Bash", "PostgreSQL", "MySQL", "MongoDB"],
         "icon": "i-lucide-code-2"
       },
       {
-        "category": "دوآپس و ابزارها",
-        "items": ["Linux", "Docker", "Kubernetes", "Terraform", "Ansible", "Nginx", "Traefik", "GitLab CI/CD", "ArgoCD", "Prometheus", "Grafana", "ELK Stack", "RabbitMQ", "Kafka", "NATS", "Nexus"],
+        "category": "لینوکس و سیستم‌ها",
+        "items": ["Linux", "مدیریت لینوکس", "Systemd", "اسکریپت‌نویسی Bash", "رفع اشکال شبکه"],
+        "icon": "i-lucide-terminal"
+      },
+      {
+        "category": "کانتینر و ارکستراسیون",
+        "items": ["Kubernetes", "Docker", "Helm", "RBAC", "Ingress"],
+        "icon": "i-lucide-boxes"
+      },
+      {
+        "category": "ذخیره‌سازی و کش",
+        "items": ["MinIO (S3)", "Ceph", "SeaweedFS", "Redis"],
+        "icon": "i-lucide-database"
+      },
+      {
+        "category": "زیرساخت به‌صورت کد",
+        "items": ["Terraform", "Ansible"],
         "icon": "i-lucide-cloud"
       },
       {
-        "category": "پایگاه‌داده",
-        "items": ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
-        "icon": "i-lucide-database"
+        "category": "CI/CD و GitOps",
+        "items": ["GitLab CI/CD", "GitHub Actions", "Gitea", "Woodpecker CI", "Git", "ArgoCD", "Nexus"],
+        "icon": "i-lucide-git-branch"
+      },
+      {
+        "category": "مانیتورینگ و لاگ",
+        "items": ["Prometheus", "Grafana", "Loki", "Alertmanager", "ELK Stack"],
+        "icon": "i-lucide-activity"
+      },
+      {
+        "category": "شبکه و وب",
+        "items": ["Nginx", "Traefik", "ریورس‌پروکسی", "DNS", "TCP/IP", "SSL/TLS"],
+        "icon": "i-lucide-globe"
       },
       {
         "category": "فریم‌ورک‌ها",
         "items": ["FastAPI", "Django", "Gin", "Gorilla Mux", "Nuxt", "Vue", "Svelte", "Next.js", "React"],
-        "icon": "i-lucide-globe"
+        "icon": "i-lucide-layers"
+      },
+      {
+        "category": "صف پیام",
+        "items": ["RabbitMQ", "Kafka", "NATS"],
+        "icon": "i-lucide-radio"
       }
     ],
     "certificates": [
